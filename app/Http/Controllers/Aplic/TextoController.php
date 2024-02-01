@@ -8,10 +8,8 @@ use Illuminate\Http\Request;
 class TextoController extends Controller
 {
   public string $textoRecebido;
-  //   < entrada_do_cliente > => < novo_valor >
-  public $agenteCli = [ "\r\n" => ' % ', "\n"=>' % '];
-
-  public function __construct($textoRecebido)
+  
+  public function __construct(string $textoRecebido)
   {
     $this->textoRecebido = $textoRecebido;
   }

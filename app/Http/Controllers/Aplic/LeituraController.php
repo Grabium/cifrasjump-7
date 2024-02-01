@@ -14,7 +14,7 @@ class LeituraController extends MarcadorController
   private TextoController $texto;
   private string $ordem = 'aberta';
   
-  public function __construct($textoRecebido)
+  public function __construct(string $textoRecebido)
   {
     $this->texto = new TextoController($textoRecebido);
   }
