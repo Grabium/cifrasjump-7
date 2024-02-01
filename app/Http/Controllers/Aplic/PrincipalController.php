@@ -7,10 +7,18 @@ use Illuminate\Http\Request;
 
 class PrincipalController extends Controller
 {
-  public function master(Request $request)
+
+  private LeituraController $leitura;
+
+  public function __construct(Request $request)
   {
-    $fator = $request['fator'];
-    $texto = $request['texto'];
-    return response()->json(['msg' => [$fator, $texto]]);
+    $this->leitura = new LeituraController($request['texto']);
+  }
+  
+  public function master()
+  {
+    //$fator = $request['fator'];
+    $textoRecebido = $this->leitura->getTextoRecebido();
+    return response()->json(['msg' => [$textoRecebido]]);
   }
 }
