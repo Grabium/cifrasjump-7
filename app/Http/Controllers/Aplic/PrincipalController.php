@@ -13,12 +13,22 @@ class PrincipalController extends Controller
   public function __construct(Request $request)
   {
     $this->leitura = new LeituraController($request['texto']);
+    //$this->conversor = new ConversorController($request['fator']); //classe ainda não criada
   }
   
   public function master()
   {
-    //$fator = $request['fator'];
-    $textoRecebido = $this->leitura->getTextoRecebido();
-    return response()->json(['msg' => [$textoRecebido]]);
+    $textoResposta = $this->passosBasicos();
+    return response()->json(['msg' => [$textoResposta]]);
+  }
+
+  private function passosBasicos()
+  {
+    //preparar texto com marcadores
+    $textoResposta = $this->leitura->lerTexto();
+    //analisar
+    //converter
+    //concatenar
+    return $textoResposta;
   }
 }
