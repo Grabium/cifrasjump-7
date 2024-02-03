@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 
 class AnaliseController extends FerramentaAnaliseController
 {
-  private TextoController $cifra;
+  //private TextoController $cifra;
 
   public function __construct()
   {
     //$this->cifra = new CifraController();
   }
 
-  public function analisar(){
-    //
+  public function analisar(array $array_chor){
+    return $array_chor;
   }
 }

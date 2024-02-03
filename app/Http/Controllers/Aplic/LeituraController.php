@@ -17,24 +17,31 @@ class LeituraController extends MarcadorController
   
   public function __construct(string $textoRecebido)
   {
-    $this->texto = new TextoController($textoRecebido);
+    $textoMarcado = $this->setTextoRecebido($textoRecebido); //string
+    $this->texto = new TextoController($textoMarcado);
   }
 
   private function separarChor($i)
   {
-    $chor = substr($this->texto->textoRecebido, $i, ($this->complChor+1)); 
+    $chor = substr($this->texto->textoMarcado, $i, ($this->complChor+1)); 
     $chor = $chor . " ";
-    return substr($chor, 0, (strpos($chor, " ")+1));
     
+    /*if(($chor[0] == "E")||($chor[0] == "A")){
+      //seEouA() vai tratar se é:
+            lá maior ou mi maior,
+            se volta pra análise 
+            ou cai direto no negativo 
+    }*/
+    
+    return substr($chor, 0, (strpos($chor, " ")+1));
   }
 
-  
   public function lerTexto()
   {
-    $l = strlen($this->texto->textoRecebido);
+    $l = strlen($this->texto->textoMarcado);
     for($i=0; $i<$l; $i++){
         
-      $car = $this->texto->textoRecebido[$i];
+      $car = $this->texto->textoMarcado[$i];
       
       if($car == ' '){
         $this->ordem = 'aberta';
@@ -50,6 +57,8 @@ class LeituraController extends MarcadorController
       
       $this->ordem = 'fechada';
     }//for()
-    return [$this->indicados, $this->array_chor];
+    return $this->array_chor;
   }//lerTexto()
+
+  
 }//class

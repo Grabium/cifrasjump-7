@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 
 class TextoController extends Controller
 {
-  public string $textoRecebido;
+  public string $textoMarcado;
   
-  public function __construct(string $textoRecebido)
+  public function __construct(string $textoMarcado)
   {
-    $this->textoRecebido = $textoRecebido;
+    $this->textoMarcado = $textoMarcado;
   }
+
+ 
 }
