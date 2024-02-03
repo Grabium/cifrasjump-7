@@ -18,12 +18,7 @@ class LeituraController extends MarcadorController
   {
     $this->texto = new TextoController($textoRecebido);
   }
-
-  public function getTextoRecebido()
-  {
-    return $this->texto->textoRecebido;
-  }
-
+  
   public function lerTexto()
   {
     $l = strlen($this->texto->textoRecebido);
@@ -37,8 +32,8 @@ class LeituraController extends MarcadorController
       }
       
       if($this->ordem == 'aberta'){
-        if(in_array($car, $this->naturais)){  //de MarcadorController
-          array_push($this->indicados, $i); //de MarcadorController
+        if(in_array($car, $this->naturais)){
+          array_push($this->indicados, $i); 
         }
       }
       

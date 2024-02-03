@@ -12,6 +12,7 @@ class PrincipalController extends Controller
 
   public function __construct(Request $request)
   {
+    //fazer o try/cath aqui:
     $this->leitura = new LeituraController($request['texto']);
     //$this->conversor = new ConversorController($request['fator']); //classe ainda não criada
   }
@@ -24,7 +25,7 @@ class PrincipalController extends Controller
 
   private function passosBasicos()
   {
-    //preparar texto com marcadores
+    //preparar texto com marcadores em PreparacaoController (->TextoController) extends MarcadorController
     $textoResposta = $this->leitura->lerTexto();
     //analisar
     //converter
