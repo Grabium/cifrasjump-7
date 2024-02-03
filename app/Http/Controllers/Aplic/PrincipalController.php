@@ -14,6 +14,7 @@ class PrincipalController extends Controller
   {
     //fazer o try/cath aqui:
     $this->leitura = new LeituraController($request['texto']);
+    //$this->analise = new AnaliseController();
     //$this->conversor = new ConversorController($request['fator']); //classe ainda não criada
   }
   
@@ -27,7 +28,7 @@ class PrincipalController extends Controller
   {
     //preparar texto com marcadores em PreparacaoController (->TextoController) extends MarcadorController
     $textoResposta = $this->leitura->lerTexto();
-    //analisar
+    //$textoResposta = $this->analise->analisar();
     //converter
     //concatenar
     return $textoResposta;
