@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Marcador extends Model
 {
-    use HasFactory;
-    protected $table = 'marcadores';
-    protected $fillable = ['id_tipos_marcadores', 'caractere', 'marcador'];
+  use HasFactory;
+  protected $table = 'marcadores';
+  protected $fillable = ['id_tipos_marcadores', 'caractere', 'marcador'];
 
-    public function tipoMarcador()
-    {
-        return $this->belongsTo('App\Models\TipoMarcador');
-    }
+  public function tipoMarcador()
+  {
+    return $this->belongsTo('App\Models\TipoMarcador');
+  }
 }
