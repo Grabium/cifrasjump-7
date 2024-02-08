@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 //grava os índices que possuem naturais
 
-class LeituraController extends MarcadorController
+class LeituraController extends InputMarcadorController
 {
 
   private TextoController $texto;
@@ -24,16 +24,20 @@ class LeituraController extends MarcadorController
   private function separarChor($i)
   {
     $chor = substr($this->texto->textoMarcado, $i, ($this->complChor+1)); 
-    $chor = $chor . " ";
+    $chor = $chor . " "; //pode conter mais de 1 espaço no chor.
     
-    /*if(($chor[0] == "E")||($chor[0] == "A")){
-      //seEouA() vai tratar se é:
-            lá maior ou mi maior,
-            se volta pra análise 
-            ou cai direto no negativo 
-    }*/
+    if(($chor[0] == "E")||($chor[0] == "A")){
+      //seEouA($chor);
+      /*
+      vai tratar se é:
+      lá maior ou mi maior,
+      se volta pra análise 
+      ou cai direto no negativo 
+      */
+    }
     
-    return substr($chor, 0, (strpos($chor, " ")+1));
+    //(corta no 1° espaço impossibilitando analisar o que vem depois)
+    return substr($chor, 0, (strpos($chor, " ")+1)); 
   }
 
   public function lerTexto()

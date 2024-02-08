@@ -18,30 +18,21 @@ class MarcadorController extends Controller
   //   < entrada_do_cliente > => < novo_valor >
   protected $agenteCli = [ "\r\n" => ' % ', "\n"=>' % '];
 
-  protected function setTextoRecebido(string $textoRecebido)
-  {
-    $caracteres = $this->getLista('caractere');
-    $marcadores = $this->getLista('marcador');
-    $textoMarcado = str_replace($caracteres, $marcadores, $textoRecebido);
-    return $textoMarcado;
-  }
-
-  private function getLista($coluna)
+  protected function getLista($coluna)
   {
     $compac = $this->busca($coluna);
     $lista = $this->descompacta($compac, $coluna);
     $lista_concatenada = $this->concatena($lista, $coluna);
-    
     return $lista_concatenada;
   }
 
-  private function busca($coluna)
+  protected function busca($coluna)
   {
     $compac = Array(DB::table('marcadores')->select($coluna)->get());
     return $compac;
   }
 
-  private function descompacta($compac, $coluna)
+  protected function descompacta($compac, $coluna)
   {
     $lista = [];
     foreach($compac as $unid_compac){
@@ -53,23 +44,20 @@ class MarcadorController extends Controller
         }
       }
     }
-    
+
     return $lista;
   }
 
-  private function concatena($lista, $coluna)
+  protected function concatena($lista, $coluna)
   {
     if($coluna == 'caractere'){
-      
       $lista_concatenada = array_merge(array_keys($this->agenteCli), $lista);
-      
     }elseif($coluna == 'marcador'){
-      
       $lista_concatenada = array_merge($this->agenteCli, $lista);
-      
     }
     return $lista_concatenada;
   }
+  
   
   
 }
