@@ -5,15 +5,13 @@ namespace App\Http\Controllers\Support;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Marcador;
-use App\Models\TipoMarcador;
 
 class MaintenanceMarcadorController extends Controller
 {
 
   public function index()
   {
-    $marcadores = new Marcador();
-    $marcadores = $marcadores->all();
+    $marcadores = Marcador::all();
     return response()->json($marcadores);
   }
 
