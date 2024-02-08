@@ -8,118 +8,105 @@ use App\Models\TipoMarcador;
 
 class MaintenanceTipoMarcadorController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
   public function index()
   {
-    $tipos_marcadores = new TipoMarcador();
-    $tipos_marcadores = $tipos_marcadores->all();
+    $tipos_marcadores = TipoMarcador::all();
     return response()->json($tipos_marcadores);
   }
 
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
   public function store(Request $request)
   {
     $data = $request->all(); //para retorno
 
-    //try{
+    try{
+      
       $new_type = new TipoMarcador();
       $new_type->tipo = $request['type_name'];
       $new_type->save();
-
+    
+    } catch (\Exception $e) {
       return response()->json([
         'data' => [
-          'msg' => 'Tipo: '.$data['type_name'].' cadastrado com sucesso!'
+          'msg' => 'Tipo: '.$data['type_name'].'...NÃO CADASTRADO!'
         ]
-      ], 200);
+      ], 401);
+    }
 
-    /*} catch (\Exception $e) {
-      $message = new ApiMessages($e->getMessage());
-      return response()->json($message->getMessage(), 401);
-    }*/
+    return response()->json([
+      'data' => [
+        'msg' => 'Tipo: '.$data['type_name'].' cadastrado com sucesso!'
+      ]
+    ], 200);
+
+    
   }
 
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
   public function show($id)
   {
-    //try{
-      $search_type = new TipoMarcador();
-      $type = $search_type->findOrFail($id);
-
+    try{
+      
+      $type = TipoMarcador::findOrFail($id);
+    
+    } catch (\Exception $e) {
       return response()->json([
-        'data' => $type
-      ], 200);
+        'data' => [
+          'msg' => 'Tipo n°: '.$id.'...NÃO ENCONTRADO!'
+        ]
+      ], 401);
+    }
 
-    /*} catch (\Exception $e) {
-      $message = new ApiMessages($e->getMessage());
-      return response()->json($message->getMessage(), 401);
-    }*/
+    return response()->json([
+      'data' => $type
+    ], 200);
   }
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
   public function update(Request $request, $id)
   {
-    $new_type = $request->all();//para atualização
+    $new_type = $request->all();
 
-    //try{
-      $old_type = new TipoMarcador();
-      $old_type = $old_type->findOrFail($id);
+    try{
+      
+      $old_type = TipoMarcador::findOrFail($id);
       $old_type->update($new_type);
 
+    } catch (\Exception $e) {
       return response()->json([
         'data' => [
-          'msg' => 'Tipo atualizado com sucesso!'
+          'msg' => 'Tipo n°: '.$id.'...NÃO ATUALIZADO!'
         ]
-      ], 200);
+      ], 401);
+    }
 
-    /*} catch (\Exception $e) {
-      $message = new ApiMessages($e->getMessage());
-      return response()->json($message->getMessage(), 401);
-    }*/
+    return response()->json([
+      'data' => [
+        'msg' => 'Tipo atualizado com sucesso!'
+      ]
+    ], 200);
+
+    
   }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
+
   public function destroy($id)
   {
-    //try{
-      $to_destroy = new TipoMarcador();
-      $to_destroy = $to_destroy->findOrFail($id);
-      $data = $to_destroy['tipo'];
+    try{
+      
+      $to_destroy = TipoMarcador::findOrFail($id);
+      $data = $to_destroy['tipo'];//para resposta.
       $to_destroy->delete();
 
+    } catch (\Exception $e) {
       return response()->json([
         'data' => [
-          'msg' => 'Tipo: '.$data.' removida com sucesso!'
+            'msg' => 'Tipo n°: '.$id.'...NÃO DELETADO!'
         ]
-      ], 200);
-
-    /*} catch (\Exception $e) {
-      $message = new ApiMessages($e->getMessage());
-      return response()->json($message->getMessage(), 401);
-    }*/
+      ], 401);
+    }
+    
+    return response()->json([
+      'data' => [
+        'msg' => 'Tipo: '.$data.' deletado com sucesso!'
+      ]
+    ], 200);
   }
 }
