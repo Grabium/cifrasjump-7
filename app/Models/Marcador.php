@@ -13,6 +13,6 @@ class Marcador extends Model
 
   public function tipoMarcador()
   {
-    return $this->belongsTo('App\Models\TipoMarcador');
+    return $this->belongsTo(TipoMarcador::class);
   }
 }

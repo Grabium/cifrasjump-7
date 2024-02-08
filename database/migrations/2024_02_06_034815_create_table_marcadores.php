@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('marcador');
             $table->timestamps();
 
-            $table->foreign('id_tipos_marcadores')->references('tipos_marcadores')->on('id');
+            $table->foreign('id_tipos_marcadores')->references('id')->on('tipos_marcadores');
         });
     }
 

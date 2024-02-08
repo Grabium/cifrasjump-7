@@ -5,63 +5,85 @@ namespace App\Http\Controllers\Support;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Marcador;
+use App\Models\TipoMarcador;
 
 class MaintenanceMarcadorController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
+
   public function index()
   {
-    //$marcadores = new Marcador();
-    //$marcadores->fetch();
-    return 'ok';
+    $marcadores = new Marcador();
+    $marcadores = $marcadores->all();
+    return response()->json($marcadores);
   }
 
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
+
   public function store(Request $request)
   {
-    //
+    $data = $request->all(); //para retorno
+
+    Marcador::create($data);
+    
+    return response()->json([
+      'data' => [
+        'msg' => 'Marcador: <strong>'.$data['marcador'].'</strong> cadastrado com sucesso!'
+      ]
+    ], 200);//return
   }
 
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function show($id)
+
+  
+  public function show(string $id)
   {
-    //
+    $search_tag = new Marcador();
+    $tag = $search_tag->findOrFail($id);
+
+    return response()->json([
+      'data' => $tag
+    ], 200);//return
   }
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function update(Request $request, $id)
+
+  public function update(Request $request, string $id)
   {
-    //
+    try{
+      $new_tag = $request->all();
+      $old_tag = Marcador::findOrFail($id);
+      $old_tag->update($new_tag);
+    }catch(Exception $e){
+      return response()->json([
+        'data' => [
+          'msg' => 'Marcador: NÃO ATUALIZADO!'
+        ]
+      ], 200);
+    }//try-catch
+
+    return response()->json([
+      'data' => [
+        'msg' => 'Marcador: n°'.$id.' atualizado para: [ '.$new_tag['caractere'].' => '.$new_tag['marcador'].' ].....com sucesso!'
+      ]
+    ], 200);//return
   }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
+
   public function destroy($id)
   {
-    //
+    try{
+      $tag = Marcador::findOrFail($id);
+      $tag->delete();
+    }catch(Exception $e){
+        return response()->json([
+          'data' => [
+            'msg' => 'Marcador: NÃO EXCLUÍDO!'
+          ]
+        ], 200);
+    }//try-catch
+
+    return response()->json([
+      'data' => [
+        'msg' => 'Marcador: n°'.$id.' EXCLUÍDO.....com sucesso!'
+      ]
+    ], 200);//return
+    
   }
 }

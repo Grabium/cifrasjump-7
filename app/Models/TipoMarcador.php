@@ -11,8 +11,8 @@ class TipoMarcador extends Model
     protected $table = 'tipos_marcadores';
     protected $fillable = ['tipo'];
 
-    public function Marcador()
+    public function marcador()
     {
-        return $this->hasOne('App\Models\Marcador');
+        return $this->hasMany(Marcador::class, 'id_tipos_marcadores', 'id');
     }
 }

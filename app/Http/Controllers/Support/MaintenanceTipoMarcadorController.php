@@ -15,9 +15,9 @@ class MaintenanceTipoMarcadorController extends Controller
    */
   public function index()
   {
-    $itpos_marcadores = new TipoMarcador();
-    $itpos_marcadores = $itpos_marcadores->all();
-    return response()->json($itpos_marcadores);
+    $tipos_marcadores = new TipoMarcador();
+    $tipos_marcadores = $tipos_marcadores->all();
+    return response()->json($tipos_marcadores);
   }
 
   /**
