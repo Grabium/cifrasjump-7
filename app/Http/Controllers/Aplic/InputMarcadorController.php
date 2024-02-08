@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class InputMarcadorController extends MarcadorController
 {
-  protected function setTextoRecebido(string $textoRecebido)
+  protected function inserirMarcadores(string $textoRecebido)
   {
     $caracteres = $this->getLista('caractere');
     $marcadores = $this->getLista('marcador');

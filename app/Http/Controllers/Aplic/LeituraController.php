@@ -17,52 +17,49 @@ class LeituraController extends InputMarcadorController
   
   public function __construct(string $textoRecebido)
   {
-    $textoMarcado = $this->setTextoRecebido($textoRecebido); //string
-    $this->texto = new TextoController($textoMarcado);
-  }
-
-  private function separarChor($i)
-  {
-    $chor = substr($this->texto->textoMarcado, $i, ($this->complChor+1)); 
-    $chor = $chor . " "; //pode conter mais de 1 espaço no chor.
-    
-    if(($chor[0] == "E")||($chor[0] == "A")){
-      //seEouA($chor);
-      /*
-      vai tratar se é:
-      lá maior ou mi maior,
-      se volta pra análise 
-      ou cai direto no negativo 
-      */
-    }
-    
-    //(corta no 1° espaço impossibilitando analisar o que vem depois)
-    return substr($chor, 0, (strpos($chor, " ")+1)); 
+    $this->texto = new TextoController($this->inserirMarcadores($textoRecebido));
   }
 
   public function lerTexto()
   {
     $l = strlen($this->texto->textoMarcado);
     for($i=0; $i<$l; $i++){
-        
+
       $car = $this->texto->textoMarcado[$i];
-      
+
       if($car == ' '){
         $this->ordem = 'aberta';
         continue;
       }
-      
+
       if($this->ordem == 'aberta'){
         if(in_array($car, $this->naturais)){
-          array_push($this->indicados, $i); 
+          $this->indicarParaAnalise($i, $car);
           array_push($this->array_chor, $this->separarChor($i));
         }
       }
-      
+
       $this->ordem = 'fechada';
+
     }//for()
     return $this->array_chor;
   }//lerTexto()
 
-  
+  private function separarChor($i)
+  {
+    $chor = substr($this->texto->textoMarcado, $i, ($this->complChor+1)); 
+    $chor = $chor . " ";
+    return substr($chor, 0, (strpos($chor, " ")+1)); 
+  }
+
+  private function indicarParaAnalise($i, $car)
+  {
+    array_push($this->indicados, $i);
+    
+    if(($car == "E")||($car == "A")){
+      array_push($this->locaisEA_menosDois, $this->texto->textoMarcado[$i-2]);
+      array_push($this->locaisEA, $i);
+      echo 'indicação feita em:'.$this->texto->textoMarcado[$i-2].'........';
+    }
+  }
 }//class
