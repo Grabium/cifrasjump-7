@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Aplic;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-
-//grava os índices que possuem naturais
+ /******
+ *  grava os índices que possuem naturais para análise.
+ *  grava os parÂmetros que servirão para definir E e A.
+ /******/
 
 class LeituraController extends InputMarcadorController
 {
@@ -20,7 +22,7 @@ class LeituraController extends InputMarcadorController
     $this->texto = new TextoController($this->inserirMarcadores($textoRecebido));
   }
 
-  public function lerTexto()
+  public function faseLeitura()
   {
     $l = strlen($this->texto->textoMarcado);
     for($i=0; $i<$l; $i++){
@@ -35,14 +37,14 @@ class LeituraController extends InputMarcadorController
       if($this->ordem == 'aberta'){
         if(in_array($car, $this->naturais)){
           $this->indicarParaAnalise($i, $car);
-          array_push($this->array_chor, $this->separarChor($i));
+          array_push($this->texto->array_chor, $this->separarChor($i));
         }
       }
 
       $this->ordem = 'fechada';
 
     }//for()
-    return $this->array_chor;
+    return $this->texto;
   }//lerTexto()
 
   private function separarChor($i)
@@ -54,12 +56,11 @@ class LeituraController extends InputMarcadorController
 
   private function indicarParaAnalise($i, $car)
   {
-    array_push($this->indicados, $i);
+    array_push($this->texto->indicados, $i);
     
     if(($car == "E")||($car == "A")){
-      array_push($this->locaisEA_menosDois, $this->texto->textoMarcado[$i-2]);
-      array_push($this->locaisEA, $i);
-      echo 'indicação feita em:'.$this->texto->textoMarcado[$i-2].'........';
+      array_push($this->texto->locaisEA_menosDois, $this->texto->textoMarcado[$i-2]);
+      array_push($this->texto->locaisEA, $i);
     }
   }
 }//class

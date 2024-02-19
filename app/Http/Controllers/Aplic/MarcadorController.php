@@ -10,10 +10,7 @@ use Illuminate\Support\Facades\DB;
 class MarcadorController extends Controller
 {
   protected array $naturais = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-  protected array $indicados = []; //resreva índices dos caracteres do texto recebido que fazem parte dos naturais 
-  protected array $array_chor = []; //reserva os chor
-  protected array $locaisEA = []; //inteiro
-  protected array $locaisEA_menosDois = []; //string 
+  
   //protected $cifers = []; //reserva os positivos
   //protected $textLines = []; //reserva as linhas de texto
   

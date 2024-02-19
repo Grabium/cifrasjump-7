@@ -13,9 +13,10 @@ class PrincipalController extends Controller
   public function __construct(Request $request)
   {
     //fazer o try/cath aqui:
-    $this->leitura = new LeituraController((string)$request['texto']);
-    $this->analise = new AnaliseController();
-    //$this->conversor = new ConversorController($request['fator']); //classe ainda não criada
+    $this->leitura = new LeituraController((string)$request['texto']);//que instaura texto
+    $this->analise = new AnaliseController();//que instaura cifra
+    $this->conversao = new ConversorController($request['fator']); //classe ainda não criada
+    $this->concatenacao = new ConcatenacaoController();
   }
   
   public function master()
@@ -26,10 +27,10 @@ class PrincipalController extends Controller
 
   private function passosBasicos()
   {
-    $array_chor = $this->leitura->lerTexto();
-    $textoResposta = $this->analise->analisar($array_chor);
-    //converter
-    //concatenar
+    $texto = $this->leitura->faseLeitura();
+    $linhasEAcordes = $this->analise->faseAnalise($texto);
+    $achordesConvertidos = $this->conversao->faseConversao($linhasEAcordes);//converter
+    $textoResposta = $this->concatenacao->faseConcatenacao($achordesConvertidos);//concatenar
     return $textoResposta;
   }
 }
