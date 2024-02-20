@@ -34,17 +34,31 @@ class FerramentaAnaliseController extends Controller
     }
   }
 
-  protected function processaSustenidoEBemol()
+  protected function processaEnarmoniaDeAcordOuDissonan()
   {
     if($this->s == 1){
       $this->cifra->enarmonia[0] = true;
       if($this->ac == '#'){
-        $this->cifra->enarmonia[1] = 'sus';
+        $this->cifra->enarmonia[1] = 'sustenido';
       }elseif($this->ac == 'b'){
-        $this->cifra->enarmonia[1] = 'bem';
+        $this->cifra->enarmonia[1] = 'bemol';
       }
     } 
     //dissonancia nao classifica a cifra. Serve apenas para abrir/fechar análise.
     $this->cifra->dissonancia = false;
   }
+
+  protected function processaMenor()
+  {
+    $this->cifra->tercaMenor = true;
+  }
+
+  protected function processaCaracMaisOuMenos()
+  {
+    if(($this->ac == '-')&&($this->cifra->dissonancia == false)){
+      $this->processaMenor();
+    }
+    $this->cifra->dissonancia = false;
+  }
+  
 }

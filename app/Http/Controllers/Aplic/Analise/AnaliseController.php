@@ -55,10 +55,13 @@ class AnaliseController extends FerramentaAnaliseController
         $this->positivo();
       }
     }elseif($menor){
-      $this->cifra->tercaMenor = true ;
+      $this->processaMenor();
       $this->incrChor();
     }elseif($enarmoniaDeAcordOuDissonan){
-      $this->processaSustenidoEBemol();
+      $this->processaEnarmoniaDeAcordOuDissonan();
+      $this->incrChor();
+    }elseif($caracMaisOuMenos){
+      $this->processaCaracMaisOuMenos();
       $this->incrChor();
     }else{
       $this->negativo();
@@ -67,7 +70,7 @@ class AnaliseController extends FerramentaAnaliseController
 
   private function positivo()
   {
-    echo $this->chor.' é acorde.<br /> ';
+    //echo $this->chor.' é acorde.<br /> ';
     $this->cifra->acordeConfirmado = $this->chor;
     $this->cifra->sizeAcordeConfirmado = strlen($this->chor);
     $this->InputInArray('arrayAcordes', 'cifra');
@@ -84,7 +87,7 @@ class AnaliseController extends FerramentaAnaliseController
 
   private function negativo()
   {
-    echo $this->chor.' não é acorde.<br /> ';
+    //echo $this->chor.' não é acorde.<br /> ';
     $this->incrArrayChor();
   }
 }
