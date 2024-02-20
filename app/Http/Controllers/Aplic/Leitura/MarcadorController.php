@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Aplic;
+namespace App\Http\Controllers\Aplic\Leitura;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,14 +9,10 @@ use Illuminate\Support\Facades\DB;
 
 class MarcadorController extends Controller
 {
-  protected array $naturais = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-  
-  //protected $cifers = []; //reserva os positivos
-  //protected $textLines = []; //reserva as linhas de texto
-  
   //   < entrada_do_cliente > => < novo_valor >
   protected $agenteCli = [ "\r\n" => ' % ', "\n"=>' % '];
-
+  
+  
   protected function getLista($coluna)
   {
     $compac = $this->busca($coluna);

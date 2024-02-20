@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Aplic;
+namespace App\Http\Controllers\Aplic\Leitura;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,6 +12,6 @@ class InputMarcadorController extends MarcadorController
     $caracteres = $this->getLista('caractere');
     $marcadores = $this->getLista('marcador');
     $textoMarcado = str_replace($caracteres, $marcadores, $textoRecebido);
-    return $textoMarcado;
+    return '% '.$textoMarcado.'  %';
   }
 }

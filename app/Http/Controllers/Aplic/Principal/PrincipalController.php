@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Aplic;
+namespace App\Http\Controllers\Aplic\Principal;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Aplic\ConversorController;
+use App\Http\Controllers\Aplic\ConcatenacaoController;
+use App\Http\Controllers\Aplic\Leitura\LeituraController;
+use App\Http\Controllers\Aplic\Analise\AnaliseController;
 
 class PrincipalController extends Controller
 {
@@ -28,9 +32,8 @@ class PrincipalController extends Controller
   private function passosBasicos()
   {
     $texto = $this->leitura->faseLeitura();
-    $linhasEAcordes = $this->analise->faseAnalise($texto);
-    $achordesConvertidos = $this->conversao->faseConversao($linhasEAcordes);//converter
-    $textoResposta = $this->concatenacao->faseConcatenacao($achordesConvertidos);//concatenar
-    return $textoResposta;
+    $linhasAcordes = $this->analise->faseAnalise($texto);
+    $achordesConvertidos = $this->conversao->faseConversao($linhasAcordes);
+    return $this->concatenacao->faseConcatenacao($achordesConvertidos);
   }
 }
