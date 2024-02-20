@@ -57,6 +57,9 @@ class AnaliseController extends FerramentaAnaliseController
     }elseif($menor){
       $this->cifra->tercaMenor = true ;
       $this->incrChor();
+    }elseif($enarmoniaDeAcordOuDissonan){
+      $this->processaSustenidoEBemol();
+      $this->incrChor();
     }else{
       $this->negativo();
     }

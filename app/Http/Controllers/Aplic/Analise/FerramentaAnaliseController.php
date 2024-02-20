@@ -33,4 +33,18 @@ class FerramentaAnaliseController extends Controller
       return 'positivo'; // encaminha para AnaliseController->positivo();
     }
   }
+
+  protected function processaSustenidoEBemol()
+  {
+    if($this->s == 1){
+      $this->cifra->enarmonia[0] = true;
+      if($this->ac == '#'){
+        $this->cifra->enarmonia[1] = 'sus';
+      }elseif($this->ac == 'b'){
+        $this->cifra->enarmonia[1] = 'bem';
+      }
+    } 
+    //dissonancia nao classifica a cifra. Serve apenas para abrir/fechar análise.
+    $this->cifra->dissonancia = false;
+  }
 }

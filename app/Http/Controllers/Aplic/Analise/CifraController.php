@@ -11,10 +11,11 @@ class CifraController extends Controller
   
   public string $acordeConfirmado;
   public int    $sizeAcordeConfirmado;
-  public bool   $enarmonia             = false;
+  public array  $enarmonia             = [false, ''];//sus ou bem
   public bool   $tercaMenor            = false;
   public bool   $composto              = false;
   public bool   $invercao              = false;
+  public bool   $dissonancia           = false;
   
   
   

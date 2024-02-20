@@ -10,6 +10,10 @@ $menor = ((($this->ac == 'm')&&($this->s == 1))
           //&&($this->cifra->composto == false)
           ||(($this->ac == 'm')
              &&($this->s == 2)
-             &&($this->cifra->enarmonia == true )
+             &&($this->cifra->enarmonia[0] == true )
              /*&&($this->cifra->composto == false )*/));
+
+$enarmoniaDeAcordOuDissonan = (($this->ac == '#')||($this->ac == 'b')//F# Eb
+                              &&(($this->s == 1)||($this->cifra->dissonancia == "sim"))//5b 6#
+                              &&($this->cifra->enarmonia[0] == false));
 ?>
