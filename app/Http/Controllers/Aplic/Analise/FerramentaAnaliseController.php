@@ -11,17 +11,23 @@ class FerramentaAnaliseController extends Controller
 {
   protected TextoController $texto;
   protected CifraController $cifra;
+  protected array $naturais; 
   protected int $changeChor = -1;//itera os chor reservados em TextoController::arrayChor[]
   protected int $s = 0; //índice do $chor a ser analizado
   protected string $ac; //caractere a analisar
   protected string $chor;
+  protected bool $possivelInversao = false;
   //protected int $locaisEA_change = 0;//iterar
+
+  public function __construct()
+  {
+    $this->naturais = (new NaturalController)->naturais;
+  }
   
   protected function seEouA()
   {
-    $naturais = (new NaturalController)->naturais;
     if((($this->texto->localEA_menosDois == "%")||($this->texto->localEA_menosDois == '.'))//se início de frase
-      &&(!in_array($this->texto->localEA_maisDois, $naturais))//e não há um possível acorde o seguindo.
+      &&(!in_array($this->texto->localEA_maisDois, $this->naturais))//e não há um possível acorde o seguindo.
       &&($this->texto->localEA_maisDois != "%")&&($this->texto->localEA_maisDois != " ")){//e não é fim de linha de acordes.
       return 'negativo'; //AnaliseController->incrChor();
     }elseif(($this->texto->localEA_menosDois == "%")
@@ -37,11 +43,11 @@ class FerramentaAnaliseController extends Controller
   protected function processaEnarmoniaDeAcordOuDissonan()
   {
     if($this->s == 1){
-      $this->cifra->enarmonia[0] = true;
+      $this->cifra->enarmonia['se'] = true;
       if($this->ac == '#'){
-        $this->cifra->enarmonia[1] = 'sustenido';
+        $this->cifra->enarmonia['natureza'] = 'sustenido';
       }elseif($this->ac == 'b'){
-        $this->cifra->enarmonia[1] = 'bemol';
+        $this->cifra->enarmonia['natureza'] = 'bemol';
       }
     } 
     //dissonancia nao classifica a cifra. Serve apenas para abrir/fechar análise.
@@ -60,5 +66,39 @@ class FerramentaAnaliseController extends Controller
     }
     $this->cifra->dissonancia = false;
   }
+
+  protected function bar()
+  {
+    $this->s ++;
+    $this->ac = $this->chor[$this->s];
+    //echo '- .'.$this->ac.'. - .'.$this->chor;
+    if(in_array($this->ac, $this->naturais)){
+      $this->possivelInversao = true;
+      $this->s ++;
+      $this->ac = $this->chor[$this->s];
+      if($this->ac == " "){
+        $this->cifra->inversao = ['se'=>true, 'tom'=>$this->chor[$this->s-1], 'natureza'=>'naturalInv'];
+        return 'analisar';//analisar();
+      }elseif(($this->ac == '#')||($this->ac == 'b')){
+        if($this->ac == '#'){
+          $this->cifra->inversao['natureza'] = "sustenidoInv";
+        }elseif($this->ac == 'b'){
+          $this->cifra->inversao['natureza'] = "bemolInv";
+        }
+        $this->s ++;
+        $this->ac = $this->chor[$this->s];
+        if($this->ac == " "){
+          $this->cifra->inversao['se'] = true;
+          $this->cifra->inversao['tom'] = $this->chor[$this->s-2].$this->chor[$this->s-1];//string($s - 2, 2);
+          return 'analisar';//analisar();
+        }
+      }else{
+        //return $this->seNum();
+      }
+    }else{//se não naturais
+      //return $this->seNum();
+    }//bloco do if(in_array...
+  }//bar()
+
   
 }

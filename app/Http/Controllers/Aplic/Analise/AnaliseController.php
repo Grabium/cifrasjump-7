@@ -63,6 +63,10 @@ class AnaliseController extends FerramentaAnaliseController
     }elseif($caracMaisOuMenos){
       $this->processaCaracMaisOuMenos();
       $this->incrChor();
+    }elseif(($this->ac == '/')&&($this->cifra->composto == false)){
+      $this->cifra->dissonancia = false;
+      $rotacionar = $this->bar();
+      $this->$rotacionar(); //analisar() || incrChor()
     }else{
       $this->negativo();
     }
@@ -73,6 +77,7 @@ class AnaliseController extends FerramentaAnaliseController
     //echo $this->chor.' é acorde.<br /> ';
     $this->cifra->acordeConfirmado = $this->chor;
     $this->cifra->sizeAcordeConfirmado = strlen($this->chor);
+    $this->cifra->getDissonancia();
     $this->InputInArray('arrayAcordes', 'cifra');
     $this->incrArrayChor();
   }
@@ -87,7 +92,7 @@ class AnaliseController extends FerramentaAnaliseController
 
   private function negativo()
   {
-    //echo $this->chor.' não é acorde.<br /> ';
+    //echo $this->chor.' não é acorde com .'.$this->ac.'.<br /> ';
     $this->incrArrayChor();
   }
 }
