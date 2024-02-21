@@ -20,18 +20,22 @@ class CifraController extends Controller
   {
     static $cont = 0;
     $this->dissonancia = true;
-    $cont = $cont +1;
+    $cont++;
     if($get == true){
+      if($cont == 1){
+        $dissonanciaPermanente = true;
+      }else{
+        $dissonanciaPermanente = false;
+      }
       $cont = 0;
-      return 'n_diss';
+    return $dissonanciaPermanente;
     }
   }
 
   public function getDissonancia()
   {
-    if($this->setDissonancia(true) == 'n_diss'){
+    if($this->setDissonancia(true)){
       $this->dissonancia = false;
     }
-    
   }
 }

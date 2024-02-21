@@ -24,6 +24,7 @@ class AnaliseController extends FerramentaAnaliseController
     $this->cifra = new CifraController();
     $this->s = 0;
     $this->changeChor++;
+    $this->possivelInversao = false;
     if($this->changeChor < count($this->texto->arrayChor)){
       $this->chor = $this->texto->arrayChor[$this->changeChor];
       if(($this->chor[0] == 'A')||($this->chor[0] == 'E')){
@@ -46,7 +47,7 @@ class AnaliseController extends FerramentaAnaliseController
   private function analisar()
   {
     require "ExpressoesTestes.php";
-    
+    //echo '- .'.$this->ac.'. - .'.$this->chor.'. testando.<br>';
     if($espaçoOuInversao){ 
       if($ouMiOuLaMaiorOuMenor){
         $funcao = $this->seEouA();
@@ -63,9 +64,9 @@ class AnaliseController extends FerramentaAnaliseController
     }elseif($caracMaisOuMenos){
       $this->processaCaracMaisOuMenos();
       $this->incrChor();
-    }elseif(($this->ac == '/')&&($this->cifra->composto == false)){
-      $this->cifra->dissonancia = false;
+    }elseif($barra){
       $rotacionar = $this->bar();
+      //echo '- .'.$this->ac.'. - .'.$this->chor.' rot= '.$rotacionar.'. possInv= .'.$this->possivelInversao.'.<br>';
       $this->$rotacionar(); //analisar() || incrChor()
     }else{
       $this->negativo();

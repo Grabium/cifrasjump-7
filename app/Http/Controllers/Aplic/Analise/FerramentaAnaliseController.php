@@ -69,36 +69,57 @@ class FerramentaAnaliseController extends Controller
 
   protected function bar()
   {
-    $this->s ++;
-    $this->ac = $this->chor[$this->s];
+    $this->cifra->dissonancia = false;
+    $this->sAc();
     //echo '- .'.$this->ac.'. - .'.$this->chor;
     if(in_array($this->ac, $this->naturais)){
       $this->possivelInversao = true;
-      $this->s ++;
-      $this->ac = $this->chor[$this->s];
+      $this->sAc();
       if($this->ac == " "){
         $this->cifra->inversao = ['se'=>true, 'tom'=>$this->chor[$this->s-1], 'natureza'=>'naturalInv'];
-        return 'analisar';//analisar();
+        return 'analisar';
       }elseif(($this->ac == '#')||($this->ac == 'b')){
         if($this->ac == '#'){
           $this->cifra->inversao['natureza'] = "sustenidoInv";
         }elseif($this->ac == 'b'){
           $this->cifra->inversao['natureza'] = "bemolInv";
         }
-        $this->s ++;
-        $this->ac = $this->chor[$this->s];
+        $this->sAc();
         if($this->ac == " "){
           $this->cifra->inversao['se'] = true;
           $this->cifra->inversao['tom'] = $this->chor[$this->s-2].$this->chor[$this->s-1];//string($s - 2, 2);
-          return 'analisar';//analisar();
+          return 'analisar';
         }
       }else{
         //return $this->seNum();
+        return 'analisar';
       }
     }else{//se não naturais
-      //return $this->seNum();
-    }//bloco do if(in_array...
+      return $this->seNum();
+    }
   }//bar()
 
+  private function sAc()
+  {
+    //echo $this->chor.' - '.$this->ac.' ->sac<br>';
+    $this->s ++;
+    $this->ac = $this->chor[$this->s];
+  }
+  
+  private function seNum()
+  {
+    $numeros = ['2', '3', '4', '5', '6', '7', '9'];
+    if((in_array($this->ac, $numeros))&&($this->cifra->dissonancia == false)){
+      return $this->numOk();
+    }else{
+      return 'analisar';
+    }
+  }
+
+  private function numOk()
+  {
+    $this->cifra->setDissonancia();
+    return 'incrChor';
+  }
   
 }
