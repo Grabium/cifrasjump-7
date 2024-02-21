@@ -73,11 +73,11 @@ class FerramentaAnaliseController extends Controller
   {
     //$this->cifra->dissonancia = false;
     $this->sAc();
-    echo '- .'.$this->ac.'. - .'.$this->chor.' dentro barr - parent'.$this->parentesis.'<br>';
+    //echo '- .'.$this->ac.'. - .'.$this->chor.' dentro barr - parent'.$this->parentesis.'<br>';
     if(in_array($this->ac, $this->naturais)){
       return $this->seInversao();
     }elseif(($this->ac == '(')&&($this->parentesis == false)){
-      echo $this->chor. ' abre<br>';
+      //echo $this->chor. ' abre<br>';
       return $this->processaAbreParentesis();
     }else{//se não naturais
       return $this->seNum();//testar numeros
@@ -93,7 +93,7 @@ class FerramentaAnaliseController extends Controller
   
   protected function seNum()
   {
-    echo $this->ac.' - diss: .'.$this->cifra->dissonancia.'. <br>';
+    //echo $this->ac.' - diss: .'.$this->cifra->dissonancia.'. <br>';
     if($this->cifra->dissonancia == false){
       $numAte9 = ['2', '3', '4', '5', '6', '7', '9'];
       if(in_array($this->ac, $numAte9)){

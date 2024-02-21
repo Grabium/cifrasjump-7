@@ -67,16 +67,16 @@ class AnaliseController extends FerramentaAnaliseController
       $this->incrChor();
     }elseif($barra){
       $funcao = $this->processaBarra();
-      echo '-ac .'.$this->ac.'. - chor .'.$this->chor.' - rotac->'.$funcao.' - diss .'.$this->cifra->dissonancia.'. -barra<br>';
+      //echo '-ac .'.$this->ac.'. - chor .'.$this->chor.' - rotac->'.$funcao.' - diss .'.$this->cifra->dissonancia.'. -barra<br>';
       $this->$funcao(); //analisar() || incrChor()
     }elseif($abreParentesis){
-      echo '- .'.$this->ac.'. - .'.$this->chor.'.<br>';
+      //echo '- .'.$this->ac.'. - .'.$this->chor.'.<br>';
       $funcao = $this->processaAbreParentesis();
-      echo '- .'.$this->ac.'. - .'.$funcao.'.<br>';
+      //echo '- .'.$this->ac.'. - .'.$funcao.'.<br>';
       $this->$funcao(); //analisar(para cair em negativo) || incremChor(para seguir analise)
     }elseif($fechaParentesis){//apenas para números
       $funcao = $this->processaFechaParentesis();
-      echo $this->chor.' - '.$funcao.' - '.$this->ac.'<br>';
+      //echo $this->chor.' - '.$funcao.' - '.$this->ac.'<br>';
       $this->$funcao(); //analisar(para cair em negativo) || incremChor(para seguir analise)
     }else{
       $this->negativo();
