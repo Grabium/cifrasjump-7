@@ -12,19 +12,20 @@ class AnaliseController extends FerramentaAnaliseController
   private array $arrayAcordes = [];
   private   int $finalIndex   = 0;
   
-  public function faseAnalise(TextoController $texto)
+  public function faseAnalise(TextoController $texto): array
   {
     $this->texto = $texto;
     $this->incrArrayChor();
     return ["objCifras" => $this->arrayAcordes, "linhas" => $this->arrayLinhas];
   }
 
-  public function incrArrayChor()
+  private function incrArrayChor()
   {
     $this->cifra = new CifraController();
     $this->s = 0;
     $this->changeChor++;
     $this->possivelInversao = false;
+    $this->parentesis = false;
     if($this->changeChor < count($this->texto->arrayChor)){
       $this->chor = $this->texto->arrayChor[$this->changeChor];
       if(($this->chor[0] == 'A')||($this->chor[0] == 'E')){
@@ -37,7 +38,7 @@ class AnaliseController extends FerramentaAnaliseController
     }
   }
 
-  public function incrChor()
+  private function incrChor()
   {
     $this->s++;
     $this->ac = $this->chor[$this->s];
@@ -65,9 +66,18 @@ class AnaliseController extends FerramentaAnaliseController
       $this->processaCaracMaisOuMenos();
       $this->incrChor();
     }elseif($barra){
-      $rotacionar = $this->bar();
-      //echo '- .'.$this->ac.'. - .'.$this->chor.' rot= '.$rotacionar.'. possInv= .'.$this->possivelInversao.'.<br>';
-      $this->$rotacionar(); //analisar() || incrChor()
+      $funcao = $this->processaBarra();
+      echo '-ac .'.$this->ac.'. - chor .'.$this->chor.' - rotac->'.$funcao.' - diss .'.$this->cifra->dissonancia.'. -barra<br>';
+      $this->$funcao(); //analisar() || incrChor()
+    }elseif($abreParentesis){
+      echo '- .'.$this->ac.'. - .'.$this->chor.'.<br>';
+      $funcao = $this->processaAbreParentesis();
+      echo '- .'.$this->ac.'. - .'.$funcao.'.<br>';
+      $this->$funcao(); //analisar(para cair em negativo) || incremChor(para seguir analise)
+    }elseif($fechaParentesis){//apenas para números
+      $funcao = $this->processaFechaParentesis();
+      echo $this->chor.' - '.$funcao.' - '.$this->ac.'<br>';
+      $this->$funcao(); //analisar(para cair em negativo) || incremChor(para seguir analise)
     }else{
       $this->negativo();
     }

@@ -17,6 +17,8 @@ class FerramentaAnaliseController extends Controller
   protected string $ac; //caractere a analisar
   protected string $chor;
   protected bool $possivelInversao = false;
+  protected bool $parentesis = false;
+  //protected bool $possivelComposto = false;
   //protected int $locaisEA_change = 0;//iterar
 
   public function __construct()
@@ -67,37 +69,20 @@ class FerramentaAnaliseController extends Controller
     $this->cifra->dissonancia = false;
   }
 
-  protected function bar()
+  protected function processaBarra()
   {
-    $this->cifra->dissonancia = false;
+    //$this->cifra->dissonancia = false;
     $this->sAc();
-    //echo '- .'.$this->ac.'. - .'.$this->chor;
+    echo '- .'.$this->ac.'. - .'.$this->chor.' dentro barr - parent'.$this->parentesis.'<br>';
     if(in_array($this->ac, $this->naturais)){
-      $this->possivelInversao = true;
-      $this->sAc();
-      if($this->ac == " "){
-        $this->cifra->inversao = ['se'=>true, 'tom'=>$this->chor[$this->s-1], 'natureza'=>'naturalInv'];
-        return 'analisar';
-      }elseif(($this->ac == '#')||($this->ac == 'b')){
-        if($this->ac == '#'){
-          $this->cifra->inversao['natureza'] = "sustenidoInv";
-        }elseif($this->ac == 'b'){
-          $this->cifra->inversao['natureza'] = "bemolInv";
-        }
-        $this->sAc();
-        if($this->ac == " "){
-          $this->cifra->inversao['se'] = true;
-          $this->cifra->inversao['tom'] = $this->chor[$this->s-2].$this->chor[$this->s-1];//string($s - 2, 2);
-          return 'analisar';
-        }
-      }else{
-        //return $this->seNum();
-        return 'analisar';
-      }
+      return $this->seInversao();
+    }elseif(($this->ac == '(')&&($this->parentesis == false)){
+      echo $this->chor. ' abre<br>';
+      return $this->processaAbreParentesis();
     }else{//se não naturais
-      return $this->seNum();
+      return $this->seNum();//testar numeros
     }
-  }//bar()
+  }
 
   private function sAc()
   {
@@ -106,19 +91,64 @@ class FerramentaAnaliseController extends Controller
     $this->ac = $this->chor[$this->s];
   }
   
-  private function seNum()
+  protected function seNum()
   {
-    $numeros = ['2', '3', '4', '5', '6', '7', '9'];
-    if((in_array($this->ac, $numeros))&&($this->cifra->dissonancia == false)){
-      return $this->numOk();
-    }else{
-      return 'analisar';
+    echo $this->ac.' - diss: .'.$this->cifra->dissonancia.'. <br>';
+    if($this->cifra->dissonancia == false){
+      $numAte9 = ['2', '3', '4', '5', '6', '7', '9'];
+      if(in_array($this->ac, $numAte9)){
+        return $this->numOk();
+      }elseif($this->ac == '1'){
+        $numAte14 = ['0', '1', '2', '3', '4'];
+        $this->sAc();
+        if(in_array($this->ac, $numAte14)){
+          return $this->numOk();
+        }
+      }
     }
+    
+    return 'analisar';//caso == barra ou negativo
   }
 
   private function numOk()
   {
     $this->cifra->setDissonancia();
+    return 'incrChor';
+  }
+
+  protected function processaAbreParentesis()
+  {
+    $this->parentesis = true;
+    return $this->processaBarra();//mesmos passos.
+  }
+
+  private function seInversao()
+  {
+    $this->possivelInversao = true;
+    $this->sAc();
+    if(($this->ac == ' ')||(($this->parentesis == true)&&($this->ac == ')'))){
+      if(($this->parentesis = true)&&($this->ac == ')')){$this->processaFechaParentesis();}
+      $this->cifra->inversao = ['se'=>true, 'tom'=>$this->chor[$this->s-1], 'natureza'=>'naturalInv'];
+    }elseif(($this->ac == '#')||($this->ac == 'b')){
+      if($this->ac == '#'){
+        $this->cifra->inversao['natureza'] = "sustenidoInv";
+      }elseif($this->ac == 'b'){
+        $this->cifra->inversao['natureza'] = "bemolInv";
+      }
+      $this->sAc();
+      if(($this->ac == ' ')||(($this->parentesis == true)&&($this->ac == ')'))){
+        if(($this->parentesis = true)&&($this->ac == ')')){$this->processaFechaParentesis();}
+        $this->cifra->inversao['se'] = true;
+        $this->cifra->inversao['tom'] = $this->chor[$this->s-2].$this->chor[$this->s-1];//string($s - 2, 2);
+      }
+    }
+    return 'analisar';
+  }
+
+  protected function processaFechaParentesis()
+  {
+    $this->parentesis = false;
+    $this->cifra->dissonancia = false;
     return 'incrChor';
   }
   
