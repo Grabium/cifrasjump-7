@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Aplic\Analise;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Aplic\Leitura\TextoController;
+use Illuminate\Support\Collection;
 
 class AnaliseController extends FerramentaAnaliseController
 {
@@ -16,7 +17,11 @@ class AnaliseController extends FerramentaAnaliseController
   public function faseAnalise(TextoController $texto): array
   {
     $this->texto = $texto;
-    $this->incrArrayChor();
+    //$this->incrArrayChor();
+    collect($this->texto->arrayChor)->map(function (string $itemChor) {//$itemChor é item de arrayChor
+      $this->chor = $itemChor;
+      $this->incrArrayChor();
+    });
     return ["objCifras" => $this->arrayAcordes, "linhas" => $this->arrayLinhas];
   }
 
@@ -24,17 +29,17 @@ class AnaliseController extends FerramentaAnaliseController
   {
     $this->cifra = new CifraController();
     $this->s = 0;
-    $this->changeChor++;
+    //$this->changeChor++;
     $this->possivelInversao = false;
     $this->parentesis = false;
-    if($this->changeChor < count($this->texto->arrayChor)){
-      $this->chor = $this->texto->arrayChor[$this->changeChor];
+    //if($this->changeChor < count($this->texto->arrayChor)){
+      //$this->chor = $this->texto->arrayChor[$this->changeChor];
       if(($this->chor[0] == 'A')||($this->chor[0] == 'E')){
         $this->preparaEApAnalise();
       }
     //echo $this->chor.' será analisado:<br /> ';
     $this->incrChor();
-    }
+    //}
   }
 
   private function incrChor()
@@ -92,7 +97,7 @@ class AnaliseController extends FerramentaAnaliseController
     $this->cifra->sizeAcordeConfirmado = strlen($this->chor);
     $this->cifra->getDissonancia();
     $this->InputInArray('arrayAcordes', 'cifra');
-    $this->incrArrayChor();
+    //$this->incrArrayChor();
   }
 
   private function InputInArray($cifraLinhaArray, $cifraLinha)
@@ -106,6 +111,6 @@ class AnaliseController extends FerramentaAnaliseController
   private function negativo()
   {
     //echo $this->chor.' não é acorde com .'.$this->ac.'.<br /> ';
-    $this->incrArrayChor();
+    //$this->incrArrayChor();
   }
 }
