@@ -24,3 +24,5 @@ $barra = (($this->ac == '/')&&($this->possivelInversao == false)&&($this->cifra-
 $abreParentesis = (($this->ac == '(')&&($this->parentesis == false)&&($this->possivelInversao == false)&&($this->cifra->dissonancia == false));
 
 $fechaParentesis = (($this->ac == ')')&&($this->parentesis == true)&&($this->cifra->dissonancia == true)&&($this->possivelInversao == false));
+
+$numero = ($this->seNum() == 'incrChor') ? true : false ;

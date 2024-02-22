@@ -25,6 +25,13 @@ class FerramentaAnaliseController extends Controller
   {
     $this->naturais = (new NaturalController)->naturais;
   }
+
+  protected function preparaEApAnalise()
+  {
+    $this->texto->localEA_menosDois  = array_shift(  $this->texto->preEA);
+    $this->texto->localEA_maisDois   = array_shift(  $this->texto->posEA);
+    $this->texto->localEmAm_maisDois = array_shift($this->texto->posEmAm);
+  }
   
   protected function seEouA()
   {
@@ -106,8 +113,7 @@ class FerramentaAnaliseController extends Controller
         }
       }
     }
-    
-    return 'analisar';//caso == barra ou negativo
+    return 'analisar';//caso == barra fecha-parentesis ou negativo
   }
 
   private function numOk()
@@ -150,6 +156,12 @@ class FerramentaAnaliseController extends Controller
     $this->parentesis = false;
     $this->cifra->dissonancia = false;
     return 'incrChor';
+  }
+
+  protected function processaNumero()
+  {
+    if($this->cifra->dissonancia == false){echo 'Dissonancia indevida!';}//gerar exception
+    $this->cifra->dissonancia = false;
   }
   
 }

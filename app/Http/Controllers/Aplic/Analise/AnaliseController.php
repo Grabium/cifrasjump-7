@@ -12,6 +12,7 @@ class AnaliseController extends FerramentaAnaliseController
   private array $arrayAcordes = [];
   private   int $finalIndex   = 0;
   
+  
   public function faseAnalise(TextoController $texto): array
   {
     $this->texto = $texto;
@@ -29,12 +30,10 @@ class AnaliseController extends FerramentaAnaliseController
     if($this->changeChor < count($this->texto->arrayChor)){
       $this->chor = $this->texto->arrayChor[$this->changeChor];
       if(($this->chor[0] == 'A')||($this->chor[0] == 'E')){
-        $this->texto->localEA_menosDois  = array_shift(  $this->texto->preEA);
-        $this->texto->localEA_maisDois   = array_shift(  $this->texto->posEA);
-        $this->texto->localEmAm_maisDois = array_shift($this->texto->posEmAm);
+        $this->preparaEApAnalise();
       }
-      //echo $this->chor.' será analisado:<br /> ';
-      $this->incrChor();
+    //echo $this->chor.' será analisado:<br /> ';
+    $this->incrChor();
     }
   }
 
@@ -78,6 +77,9 @@ class AnaliseController extends FerramentaAnaliseController
       $funcao = $this->processaFechaParentesis();
       //echo $this->chor.' - '.$funcao.' - '.$this->ac.'<br>';
       $this->$funcao(); //analisar(para cair em negativo) || incremChor(para seguir analise)
+    }elseif($numero){
+      $this->processaNumero();
+      $this->incrChor();
     }else{
       $this->negativo();
     }
