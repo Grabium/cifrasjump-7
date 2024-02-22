@@ -163,5 +163,15 @@ class FerramentaAnaliseController extends Controller
     if($this->cifra->dissonancia == false){echo 'Dissonancia indevida!';}//gerar exception
     $this->cifra->dissonancia = false;
   }
+
+  protected function seMarcador():bool
+  {
+    //retorna se true caso sim. até antes de espaco.
+  }
+
+  protected function processaMarcador():string
+  {
+    //classifica o objeto se necessário e retorna incrChor para ' '---> positivo()
+  }
   
 }

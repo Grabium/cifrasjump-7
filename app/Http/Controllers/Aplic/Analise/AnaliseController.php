@@ -17,6 +17,7 @@ class AnaliseController extends FerramentaAnaliseController
   public function faseAnalise(TextoController $texto): array
   {
     $this->texto = $texto;
+    //dd($this->texto);
     collect($this->texto->arrayChor)->map(function (string $itemChor) {//$itemChor é item de arrayChor
       $this->chor = $itemChor;
       $this->incrArrayChor();

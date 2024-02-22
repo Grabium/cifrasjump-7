@@ -26,3 +26,5 @@ $abreParentesis = (($this->ac == '(')&&($this->parentesis == false)&&($this->pos
 $fechaParentesis = (($this->ac == ')')&&($this->parentesis == true)&&($this->cifra->dissonancia == true)&&($this->possivelInversao == false));
 
 $numero = ($this->seNum() == 'incrChor') ? true : false ;
+
+//$marcador = $this->seMarcador(); //recebe bool
