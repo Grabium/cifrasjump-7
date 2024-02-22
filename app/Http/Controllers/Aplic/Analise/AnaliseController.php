@@ -11,13 +11,12 @@ class AnaliseController extends FerramentaAnaliseController
 {
   private array $arrayLinhas  = [];
   private array $arrayAcordes = [];
-  private   int $finalIndex   = 0;
+  private   int $lastIndex   = 0;
   
   
   public function faseAnalise(TextoController $texto): array
   {
     $this->texto = $texto;
-    //$this->incrArrayChor();
     collect($this->texto->arrayChor)->map(function (string $itemChor) {//$itemChor é item de arrayChor
       $this->chor = $itemChor;
       $this->incrArrayChor();
@@ -29,17 +28,13 @@ class AnaliseController extends FerramentaAnaliseController
   {
     $this->cifra = new CifraController();
     $this->s = 0;
-    //$this->changeChor++;
     $this->possivelInversao = false;
     $this->parentesis = false;
-    //if($this->changeChor < count($this->texto->arrayChor)){
-      //$this->chor = $this->texto->arrayChor[$this->changeChor];
-      if(($this->chor[0] == 'A')||($this->chor[0] == 'E')){
-        $this->preparaEApAnalise();
-      }
+    if(($this->chor[0] == 'A')||($this->chor[0] == 'E')){
+      $this->preparaEApAnalise();
+    }
     //echo $this->chor.' será analisado:<br /> ';
     $this->incrChor();
-    //}
   }
 
   private function incrChor()
@@ -97,20 +92,18 @@ class AnaliseController extends FerramentaAnaliseController
     $this->cifra->sizeAcordeConfirmado = strlen($this->chor);
     $this->cifra->getDissonancia();
     $this->InputInArray('arrayAcordes', 'cifra');
-    //$this->incrArrayChor();
   }
 
   private function InputInArray($cifraLinhaArray, $cifraLinha)
   {
-    $stringIndex = $this->finalIndex;
+    $stringIndex = $this->lastIndex;
     settype($stringIndex, "string");
     $this->$cifraLinhaArray['0'.$stringIndex] = $this->$cifraLinha;
-    $this->finalIndex++ ;
+    $this->lastIndex++ ;
   }
 
   private function negativo()
   {
     //echo $this->chor.' não é acorde com .'.$this->ac.'.<br /> ';
-    //$this->incrArrayChor();
   }
 }
