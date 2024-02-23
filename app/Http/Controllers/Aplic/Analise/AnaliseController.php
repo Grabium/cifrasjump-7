@@ -11,7 +11,8 @@ class AnaliseController extends FerramentaAnaliseController
 {
   private array $arrayLinhas  = [];
   private array $arrayAcordes = [];
-  private   int $lastIndex   = 0;
+  private array $arrayNegat   = [];//chor que deverá ser indexado para retorno da fase.
+  private   int $lastIndex    = 0;
   
   
   public function faseAnalise(TextoController $texto): array
@@ -22,7 +23,7 @@ class AnaliseController extends FerramentaAnaliseController
       $this->chor = $itemChor;
       $this->incrArrayChor();
     });
-    return ["objCifras" => $this->arrayAcordes, "linhas" => $this->arrayLinhas];
+    return ["objCifras" => $this->arrayAcordes, "linhas" => $this->arrayLinhas, "negativos" => $arrayNegat];
   }
 
   private function incrArrayChor()

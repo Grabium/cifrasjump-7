@@ -17,6 +17,11 @@ class LeituraController extends InputMarcadorController
   private TextoController $texto;
   private string          $ordem     = 'aberta';
   private int             $complChor = 12;
+  private string          $line      = '';
+  private string          $chor      = '';
+  private string          $car       = '';
+  private int             $i;
+  private int             $lastIndex = 0;
   
   public function __construct(string $textoRecebido)
   {
@@ -26,44 +31,78 @@ class LeituraController extends InputMarcadorController
   public function faseLeitura()
   {
     $l = strlen($this->texto->textoMarcado);
-    for($i=0; $i<$l; $i++){
+    for($this->i=0; $this->i<$l; $this->i++){
+      
+      $this->car = $this->texto->textoMarcado[$this->i];
 
-      $car = $this->texto->textoMarcado[$i];
-
-      if($car == ' '){
+      if($this->car == ' '){
         $this->ordem = 'aberta';
+        $this->setLine();
         continue;
       }
 
       if($this->ordem == 'aberta'){
-        if(in_array($car, (new NaturalController)->naturais)){
-          $this->indicarParaAnalise($i, $car);
-          array_push($this->texto->arrayChor, $this->separarChor($i));
+        if(in_array($this->car, (new NaturalController)->naturais)){
+          $this->indicarParaAnalise($this->car);//arryas int e EAs...indicações.
+          $this->chor = $this->separarChor();
+          $this->InputInArray('arrayChor', 'chor');
+          $this->saltarLeitura();
+          $this->InputInArray('arrayTextLines', 'line');
+        }else{
+          $this->setLine();
         }
+      }else{
+        $this->setLine();
       }
 
       $this->ordem = 'fechada';
-
     }//for()
+    if($this->line){
+      array_push($this->texto->arrayTextLines, $this->line);
+    }
+    
     return $this->texto;
-  }//lerTexto()
+  }//faseLeitura()
 
-  private function separarChor($i)
+  private function InputInArray($arrayCL, $itemCL)
   {
-    $chor = substr($this->texto->textoMarcado, $i, ($this->complChor+1)); 
+    $stringIndex = $this->lastIndex;
+    settype($stringIndex, "string");
+    $this->texto->$arrayCL['0'.$stringIndex] = $this->$itemCL;
+    $this->lastIndex++ ;
+    if($itemCL == 'line'){
+      $this->line = '';
+    }
+  }
+
+  private function separarChor()
+  {
+    $chor = substr($this->texto->textoMarcado, $this->i, ($this->complChor+1)); 
     $chor = $chor . " ";
     return substr($chor, 0, (strpos($chor, " ")+1)); 
   }
 
-  private function indicarParaAnalise($i, $car)
+  private function indicarParaAnalise()
   {
-    array_push($this->texto->indicados, $i);
+    array_push($this->texto->indicados, $this->i);
     
-    if(($car == "E")||($car == "A")){
-      array_push($this->texto->locaisEA, $i);
-      array_push(   $this->texto->preEA, $this->texto->textoMarcado[$i-2]);
-      array_push(   $this->texto->posEA, $this->texto->textoMarcado[$i+2]);
-      array_push( $this->texto->posEmAm, $this->texto->textoMarcado[$i+3]);
+    if(($this->car == "E")||($this->car == "A")){
+      array_push($this->texto->locaisEA, $this->i);
+      array_push(   $this->texto->preEA, $this->texto->textoMarcado[$this->i-2]);
+      array_push(   $this->texto->posEA, $this->texto->textoMarcado[$this->i+2]);
+      array_push( $this->texto->posEmAm, $this->texto->textoMarcado[$this->i+3]);
     }
   }
+
+  private function setLine()
+  {
+    $this->line = $this->line.$this->car;
+  }
+
+  private function saltarLeitura()
+  {
+    $saltoLeitura = ($saltoLeitura = strlen(end($this->texto->arrayChor))) ?: 0;
+    $this->i += ($saltoLeitura-2);
+  }
+
 }//class
