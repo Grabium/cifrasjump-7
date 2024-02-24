@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 
 class AnaliseController extends FerramentaAnaliseController
 {
-  protected array $arrayLinhas  = [];
+  //protected array $arrayLinhas  = [];
   protected array $arrayAcordes = [];
   protected array $arrayNegat   = [];//chor que deverá ser indexado para retorno da fase.
   
@@ -17,13 +17,18 @@ class AnaliseController extends FerramentaAnaliseController
   
   public function faseAnalise(TextoController $texto): array
   {
-    $this->texto = $texto;
-    //dd($this->texto);
+    $this->preMap($texto);
+    
     collect($this->texto->arrayChor)->map(function (string $itemChor) {//$itemChor é item de arrayChor
       $this->chor = $itemChor;
       $this->incrArrayChor();
     });
-    return ["objCifras" => $this->arrayAcordes, "linhas" => $this->arrayLinhas, "negativos" => $this->arrayNegat, $this->texto];
+    
+    unset($this->texto);
+    
+    return ["arrayAcordes" => $this->arrayAcordes, 
+      "arrayLinhas" => $this->arrayLinhas, 
+      "arrayNegat" => $this->arrayNegat];
   }
 
   private function incrArrayChor()
@@ -92,12 +97,13 @@ class AnaliseController extends FerramentaAnaliseController
     //echo $this->chor.' é acorde.<br /> ';
     $this->cifra->acordeConfirmado = $this->chor;
     $this->cifra->sizeAcordeConfirmado = strlen($this->chor);
-    $this->cifra->getDissonancia();
+    //$this->InputInArray('arrayAcordes', 'cifra');
     $this->InputInArray('arrayAcordes', 'cifra');
   }
 
   private function negativo()
   {
     //echo $this->chor.' não é acorde com .'.$this->ac.'.<br /> ';
+    $this->InputInArray('arrayNegat', 'chor');
   }
 }

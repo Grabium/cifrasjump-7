@@ -33,7 +33,7 @@ class PrincipalController extends Controller
   {
     $texto = $this->leitura->faseLeitura();
     $linhasAcordes = $this->analise->faseAnalise($texto);
-    $achordesConvertidos = $this->conversao->faseConversao($linhasAcordes);
-    return $this->concatenacao->faseConcatenacao($achordesConvertidos);
+    $linhasAcordes["arrayAcordes"] = $this->conversao->faseConversao($linhasAcordes["arrayAcordes"]);
+    return $this->concatenacao->faseConcatenacao($linhasAcordes);
   }
 }

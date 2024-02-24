@@ -18,13 +18,24 @@ class FerramentaAnaliseController extends Controller
   protected string $chor;
   protected bool $possivelInversao = false;
   protected bool $parentesis = false;
-  protected int $lastIndex    = 0;
+  protected array $arrayChorKeys = [];
+  //protected array $arrayTextLinesKeys = [];
+  //protected int $lastIndex    = 0;
   //protected bool $possivelComposto = false;
   //protected int $locaisEA_change = 0;//iterar
 
   public function __construct()
   {
     $this->naturais = (new NaturalController)->naturais;
+  }
+
+  protected function preMap(TextoController $texto)
+  {
+    $this->texto = $texto;
+    unset($texto);
+    $this->arrayLinhas = $this->texto->arrayTextLines;
+    $this->arrayChorKeys = array_keys($this->texto->arrayChor);
+    $this->arrayTextLinesKeys = array_keys($this->texto->arrayTextLines);
   }
 
   protected function preparaEApAnalise()
@@ -50,12 +61,11 @@ class FerramentaAnaliseController extends Controller
     }
   }
 
-  protected function InputInArray($cifraOuTextoArray, $cifraLinha)
+  protected function InputInArray($posNegArr, $posNegItem)
   {
-    $stringIndex = $this->lastIndex;
-    settype($stringIndex, "string");
-    $this->$cifraOuTextoArray['0'.$stringIndex] = $this->$cifraLinha;
-    $this->lastIndex++ ;
+    $this->cifra->getDissonancia();//zerar quando posit. ou neg.
+    $key = array_shift($this->arrayChorKeys);
+    $this->$posNegArr[$key] = $this->$posNegItem;
   }
 
   protected function processaEnarmoniaDeAcordOuDissonan()
