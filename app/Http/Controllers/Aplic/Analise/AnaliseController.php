@@ -9,10 +9,10 @@ use Illuminate\Support\Collection;
 
 class AnaliseController extends FerramentaAnaliseController
 {
-  private array $arrayLinhas  = [];
-  private array $arrayAcordes = [];
-  private array $arrayNegat   = [];//chor que deverá ser indexado para retorno da fase.
-  private   int $lastIndex    = 0;
+  protected array $arrayLinhas  = [];
+  protected array $arrayAcordes = [];
+  protected array $arrayNegat   = [];//chor que deverá ser indexado para retorno da fase.
+  
   
   
   public function faseAnalise(TextoController $texto): array
@@ -23,7 +23,7 @@ class AnaliseController extends FerramentaAnaliseController
       $this->chor = $itemChor;
       $this->incrArrayChor();
     });
-    return ["objCifras" => $this->arrayAcordes, "linhas" => $this->arrayLinhas, "negativos" => $arrayNegat];
+    return ["objCifras" => $this->arrayAcordes, "linhas" => $this->arrayLinhas, "negativos" => $this->arrayNegat, $this->texto];
   }
 
   private function incrArrayChor()
@@ -94,14 +94,6 @@ class AnaliseController extends FerramentaAnaliseController
     $this->cifra->sizeAcordeConfirmado = strlen($this->chor);
     $this->cifra->getDissonancia();
     $this->InputInArray('arrayAcordes', 'cifra');
-  }
-
-  private function InputInArray($cifraLinhaArray, $cifraLinha)
-  {
-    $stringIndex = $this->lastIndex;
-    settype($stringIndex, "string");
-    $this->$cifraLinhaArray['0'.$stringIndex] = $this->$cifraLinha;
-    $this->lastIndex++ ;
   }
 
   private function negativo()

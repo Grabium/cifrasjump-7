@@ -1,5 +1,5 @@
 <?php
-//$teste1 = 'tudo ok no require';
+
 $espaçoOuInversao = (($this->ac == ' ')||($this->cifra->inversao['se'] == true ));
 
 $ouMiOuLaMaiorOuMenor = ((($this->chor[0] == "E")||($this->chor[0] == "A"))

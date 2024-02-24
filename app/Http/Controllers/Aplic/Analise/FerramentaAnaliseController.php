@@ -18,6 +18,7 @@ class FerramentaAnaliseController extends Controller
   protected string $chor;
   protected bool $possivelInversao = false;
   protected bool $parentesis = false;
+  protected int $lastIndex    = 0;
   //protected bool $possivelComposto = false;
   //protected int $locaisEA_change = 0;//iterar
 
@@ -47,6 +48,14 @@ class FerramentaAnaliseController extends Controller
     }else{
       return 'positivo'; // encaminha para AnaliseController->positivo();
     }
+  }
+
+  protected function InputInArray($cifraOuTextoArray, $cifraLinha)
+  {
+    $stringIndex = $this->lastIndex;
+    settype($stringIndex, "string");
+    $this->$cifraOuTextoArray['0'.$stringIndex] = $this->$cifraLinha;
+    $this->lastIndex++ ;
   }
 
   protected function processaEnarmoniaDeAcordOuDissonan()

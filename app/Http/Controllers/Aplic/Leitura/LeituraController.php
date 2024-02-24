@@ -58,9 +58,10 @@ class LeituraController extends InputMarcadorController
       $this->ordem = 'fechada';
     }//for()
     if($this->line){
-      array_push($this->texto->arrayTextLines, $this->line);
+      $this->InputInArray('arrayTextLines', 'line');
     }
-    
+    $this->texto->textoMarcado = '';
+    $this->texto->indicados = [];
     return $this->texto;
   }//faseLeitura()
 
