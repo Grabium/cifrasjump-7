@@ -19,10 +19,6 @@ class FerramentaAnaliseController extends Controller
   protected bool $possivelInversao = false;
   protected bool $parentesis = false;
   protected array $arrayChorKeys = [];
-  //protected array $arrayTextLinesKeys = [];
-  //protected int $lastIndex    = 0;
-  //protected bool $possivelComposto = false;
-  //protected int $locaisEA_change = 0;//iterar
 
   public function __construct()
   {
@@ -150,10 +146,14 @@ class FerramentaAnaliseController extends Controller
   private function seInversao()
   {
     $this->possivelInversao = true;
+    $indexInversao = $this->s;
     $this->sAc();
     if(($this->ac == ' ')||(($this->parentesis == true)&&($this->ac == ')'))){
       if(($this->parentesis = true)&&($this->ac == ')')){$this->processaFechaParentesis();}
-      $this->cifra->inversao = ['se'=>true, 'tom'=>$this->chor[$this->s-1], 'natureza'=>'naturalInv'];
+      $this->cifra->inversao = ['se'=>true, 
+        'tom'=>$this->chor[$this->s-1], 
+        'natureza'=>'naturalInv',
+        'indexInversao' => $indexInversao];
     }elseif(($this->ac == '#')||($this->ac == 'b')){
       if($this->ac == '#'){
         $this->cifra->inversao['natureza'] = "sustenidoInv";
@@ -165,6 +165,7 @@ class FerramentaAnaliseController extends Controller
         if(($this->parentesis = true)&&($this->ac == ')')){$this->processaFechaParentesis();}
         $this->cifra->inversao['se'] = true;
         $this->cifra->inversao['tom'] = $this->chor[$this->s-2].$this->chor[$this->s-1];//string($s - 2, 2);
+        $this->cifra->inversao['indexInversao'] = $indexInversao;
       }
     }
     return 'analisar';

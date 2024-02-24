@@ -12,7 +12,7 @@ class CifraController extends Controller
   public int    $sizeAcordeConfirmado;
   public array  $enarmonia             = ['se' => false, 'natureza' => null];//sus ou bem
   public bool   $tercaMenor            = false;
-  public array  $inversao              = ['se' => false, 'tom' => null, 'natureza' => null];// [V/F, tom, nat/sus/bem]
+  public array  $inversao              = ['se' => false, 'tom' => null, 'natureza' => null, 'indexInversao' => 0];// [V/F, tom, nat/sus/bem]
   public bool   $dissonancia           = false;
 
   public function setDissonancia(bool $get = false)
