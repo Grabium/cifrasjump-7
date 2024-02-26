@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Aplic\Principal\NaturalController;
 
  /******
- *  grava os índices que possuem naturais para análise.
- *  grava os parÂmetros que servirão para definir E e A.
+ *  Altera estado do objeto $texto para futura análise
+ *  manipulando suas arrays.
  /******/
 
 class LeituraController extends InputMarcadorController
@@ -67,9 +67,11 @@ class LeituraController extends InputMarcadorController
 
   private function InputInArray($arrayCL, $itemCL)
   {
+    
     $stringIndex = $this->lastIndex;
     settype($stringIndex, "string");
-    $this->texto->$arrayCL['0'.$stringIndex] = $this->$itemCL;
+    $newKey = '0'.$stringIndex;
+    $this->texto->$arrayCL[$newKey] = $this->$itemCL;
     $this->lastIndex++ ;
     if($itemCL == 'line'){
       $this->line = '';

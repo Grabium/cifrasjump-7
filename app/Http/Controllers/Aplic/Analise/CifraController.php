@@ -14,6 +14,7 @@ class CifraController extends Controller
   public bool   $tercaMenor            = false;
   public array  $inversao              = ['se' => false, 'tom' => null, 'natureza' => null, 'indexInversao' => 0];// [V/F, tom, nat/sus/bem]
   public bool   $dissonancia           = false;
+  public array  $marcador              = ['se' => false, 'marcador' => ''];
 
   public function setDissonancia(bool $get = false)
   {

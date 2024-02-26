@@ -13,7 +13,7 @@ class MarcadorController extends Controller
   protected $agenteCli = [ "\r\n" => ' % ', "\n"=>' % '];
   
   
-  protected function getLista($coluna)
+  public function getLista($coluna)
   {
     $compac = $this->busca($coluna);
     $lista  = $this->descompacta($compac, $coluna);

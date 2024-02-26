@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Aplic\Leitura\TextoController;
 use App\Http\Controllers\Aplic\Principal\NaturalController;
+use App\Http\Controllers\Aplic\Leitura\MarcadorController;
 
 class FerramentaAnaliseController extends Controller
 {
@@ -106,10 +107,9 @@ class FerramentaAnaliseController extends Controller
     }
   }
 
-  private function sAc()
+  private function sAc($incremento = 1)
   {
-    //echo $this->chor.' - '.$this->ac.' ->sac<br>';
-    $this->s ++;
+    $this->s = ($this->s + $incremento);
     $this->ac = $this->chor[$this->s];
   }
   
@@ -185,13 +185,37 @@ class FerramentaAnaliseController extends Controller
   }
 
   protected function seMarcador():bool
-  {
-    //retorna se true caso sim. até antes de espaco.
+  {//se positivo será processado aqui mesmo.
+    $this->sAc();
+    if($this->ac == '_'){
+      if(($this->cifra->enarmonia['se'] == true)&&($this->s == 3)){
+        $start = 2;
+      }elseif(($this->cifra->enarmonia['se'] == false)&&($this->s == 2)){
+        $start = 1;
+      }
+      
+      $boolean = $this->compararMarcador($start);
+      if($boolean){
+        $this->sAc(4);
+      }
+      return $boolean;
+    }
+    return false;
   }
 
-  protected function processaMarcador():string
+  private function compararMarcador($start):bool
   {
-    //classifica o objeto se necessário e retorna incrChor para ' '---> positivo()
+    $marcadores = (new MarcadorController)->getLista('marcador');
+    $parcialChor = substr($this->chor, $start, 6);
+    if(in_array($parcialChor, $marcadores)){
+      $this->cifra->marcador['se'] = true;
+      $this->cifra->marcador['marcador'] = $parcialChor;
+      return true;
+    }else{
+      return false;
+    }
   }
+    
+  
   
 }

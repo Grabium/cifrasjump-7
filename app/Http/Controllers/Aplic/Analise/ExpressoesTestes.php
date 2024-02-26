@@ -27,4 +27,4 @@ $fechaParentesis = (($this->ac == ')')&&($this->parentesis == true)&&($this->cif
 
 $numero = ($this->seNum() == 'incrChor') ? true : false ;
 
-//$marcador = $this->seMarcador(); //recebe bool
+$marcador = (($this->ac == '|')&&($this->seMarcador())); //recebe bool

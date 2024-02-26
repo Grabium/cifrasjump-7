@@ -17,6 +17,7 @@ class AnaliseController extends FerramentaAnaliseController
   
   public function faseAnalise(TextoController $texto): array
   {
+    //dd($texto);
     $this->preMap($texto);
     
     collect($this->texto->arrayChor)->map(function (string $itemChor) {//$itemChor é item de arrayChor
@@ -73,19 +74,17 @@ class AnaliseController extends FerramentaAnaliseController
       $this->incrChor();
     }elseif($barra){
       $funcao = $this->processaBarra();
-      //echo '-ac .'.$this->ac.'. - chor .'.$this->chor.' - rotac->'.$funcao.' - diss .'.$this->cifra->dissonancia.'. -barra<br>';
-      $this->$funcao(); //analisar() || incrChor()
+      $this->$funcao();
     }elseif($abreParentesis){
-      //echo '- .'.$this->ac.'. - .'.$this->chor.'.<br>';
       $funcao = $this->processaAbreParentesis();
-      //echo '- .'.$this->ac.'. - .'.$funcao.'.<br>';
-      $this->$funcao(); //analisar(para cair em negativo) || incremChor(para seguir analise)
+      $this->$funcao(); 
     }elseif($fechaParentesis){//apenas para números
       $funcao = $this->processaFechaParentesis();
-      //echo $this->chor.' - '.$funcao.' - '.$this->ac.'<br>';
-      $this->$funcao(); //analisar(para cair em negativo) || incremChor(para seguir analise)
+      $this->$funcao(); 
     }elseif($numero){
       $this->processaNumero();
+      $this->incrChor();
+    }elseif($marcador){
       $this->incrChor();
     }else{
       $this->negativo();
@@ -97,7 +96,6 @@ class AnaliseController extends FerramentaAnaliseController
     //echo $this->chor.' é acorde.<br /> ';
     $this->cifra->acordeConfirmado = $this->chor;
     $this->cifra->sizeAcordeConfirmado = strlen($this->chor);
-    //$this->InputInArray('arrayAcordes', 'cifra');
     $this->InputInArray('arrayAcordes', 'cifra');
   }
 

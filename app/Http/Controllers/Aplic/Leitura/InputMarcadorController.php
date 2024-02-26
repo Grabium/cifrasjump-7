@@ -7,11 +7,17 @@ use Illuminate\Http\Request;
 
 class InputMarcadorController extends MarcadorController
 {
+  //private string $textoMarcado   = '';
+  //private array  $indiceMarcadores = [];
+
+  
   protected function inserirMarcadores(string $textoRecebido)
   {
     $caracteres = $this->getLista('caractere');
     $marcadores = $this->getLista('marcador');
     $textoMarcado = str_replace($caracteres, $marcadores, $textoRecebido);
+    
     return '% '.$textoMarcado.'  %';
   }
+
 }
