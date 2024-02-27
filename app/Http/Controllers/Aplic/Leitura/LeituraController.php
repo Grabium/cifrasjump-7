@@ -21,11 +21,15 @@ class LeituraController extends InputMarcadorController
   private string          $chor      = '';
   private string          $car       = '';
   private int             $i;
-  private int             $lastIndex = 0;
+  private int             $lastIndex  = 0;
+  private array           $marcadores = [];
   
   public function __construct(string $textoRecebido)
   {
-    $this->texto = new TextoController($this->inserirMarcadores($textoRecebido));
+    $arrayData   =  $this->inserirMarcadores($textoRecebido);
+    $this->marcadores[] = $arrayData[1];
+    $this->marcadores[] = $arrayData[2];
+    $this->texto = new TextoController($arrayData[0]);
   }
 
   public function faseLeitura()
@@ -62,7 +66,7 @@ class LeituraController extends InputMarcadorController
     }
     $this->texto->textoMarcado = '';
     $this->texto->indicados = [];
-    return $this->texto;
+    return [$this->texto, $this->marcadores];
   }//faseLeitura()
 
   private function InputInArray($arrayCL, $itemCL)

@@ -12,6 +12,7 @@ class FerramentaAnaliseController extends Controller
 {
   protected TextoController $texto;
   protected CifraController $cifra;
+  protected array $marcadores; 
   protected array $naturais; 
   protected int $changeChor = -1;//itera os chor reservados em TextoController::arrayChor[]
   protected int $s = 0; //índice do $chor a ser analizado
@@ -205,9 +206,8 @@ class FerramentaAnaliseController extends Controller
 
   private function compararMarcador($start):bool
   {
-    $marcadores = (new MarcadorController)->getLista('marcador');
     $parcialChor = substr($this->chor, $start, 6);
-    if(in_array($parcialChor, $marcadores)){
+    if(in_array($parcialChor, $this->marcadores)){
       $this->cifra->marcador['se'] = true;
       $this->cifra->marcador['marcador'] = $parcialChor;
       return true;

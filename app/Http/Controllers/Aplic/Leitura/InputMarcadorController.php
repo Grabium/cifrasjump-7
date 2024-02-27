@@ -13,11 +13,11 @@ class InputMarcadorController extends MarcadorController
   
   protected function inserirMarcadores(string $textoRecebido)
   {
-    $caracteres = $this->getLista('caractere');
-    $marcadores = $this->getLista('marcador');
+    $caracteres   = $this->getLista('caractere');
+    $marcadores   = $this->getLista('marcador');
     $textoMarcado = str_replace($caracteres, $marcadores, $textoRecebido);
-    
-    return '% '.$textoMarcado.'  %';
+    //talvez deva setar as chaves.
+    return ['% '.$textoMarcado.'  %', $marcadores, $caracteres];
   }
 
 }

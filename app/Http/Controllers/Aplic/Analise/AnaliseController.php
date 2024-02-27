@@ -15,10 +15,10 @@ class AnaliseController extends FerramentaAnaliseController
   
   
   
-  public function faseAnalise(TextoController $texto): array
+  public function faseAnalise($data): array
   {
-    //dd($texto);
-    $this->preMap($texto);
+    $this->preMap($data[0]);
+    $this->marcadores = $data[1][0];
     
     collect($this->texto->arrayChor)->map(function (string $itemChor) {//$itemChor é item de arrayChor
       $this->chor = $itemChor;
@@ -27,9 +27,11 @@ class AnaliseController extends FerramentaAnaliseController
     
     unset($this->texto);
     
-    return ["arrayAcordes" => $this->arrayAcordes, 
-      "arrayLinhas" => $this->arrayLinhas, 
-      "arrayNegat" => $this->arrayNegat];
+    return [
+      "arrayAcordes" => $this->arrayAcordes, 
+      "arrayLinhas"  => $this->arrayLinhas, 
+      "arrayNegat"   => $this->arrayNegat
+    ];
   }
 
   private function incrArrayChor()

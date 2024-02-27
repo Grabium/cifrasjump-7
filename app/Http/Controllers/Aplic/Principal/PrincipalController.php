@@ -13,6 +13,7 @@ class PrincipalController extends Controller
 {
 
   private LeituraController $leitura;
+  
 
   public function __construct(Request $request)
   {
@@ -31,8 +32,8 @@ class PrincipalController extends Controller
 
   private function passosBasicos()
   {
-    $texto = $this->leitura->faseLeitura();
-    $linhasAcordes = $this->analise->faseAnalise($texto);
+    $data = $this->leitura->faseLeitura();//[0]$texto [1]$marcaores
+    $linhasAcordes = $this->analise->faseAnalise($data);
     $linhasAcordes["arrayAcordes"] = $this->conversao->faseConversao($linhasAcordes["arrayAcordes"]);
     return $this->concatenacao->faseConcatenacao($linhasAcordes);
   }
