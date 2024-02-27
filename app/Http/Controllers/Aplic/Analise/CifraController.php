@@ -9,6 +9,8 @@ class CifraController extends Controller
 {
   
   public string $acordeConfirmado;
+  public string $tonalidade;
+  public string $tipagem;
   public int    $sizeAcordeConfirmado;
   public array  $enarmonia             = ['se' => false, 'natureza' => null];//sus ou bem
   public bool   $tercaMenor            = false;

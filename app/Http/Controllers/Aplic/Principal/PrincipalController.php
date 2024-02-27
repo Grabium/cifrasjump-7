@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Aplic\Principal;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Aplic\ConversorController;
+use App\Http\Controllers\Aplic\Conversao\ConversorController;
 use App\Http\Controllers\Aplic\ConcatenacaoController;
 use App\Http\Controllers\Aplic\Leitura\LeituraController;
 use App\Http\Controllers\Aplic\Analise\AnaliseController;
@@ -32,9 +32,9 @@ class PrincipalController extends Controller
 
   private function passosBasicos()
   {
-    $data = $this->leitura->faseLeitura();//[0]$texto [1]$marcaores
+    $data = $this->leitura->faseLeitura();//[0]$texto [1]$marcadores
     $linhasAcordes = $this->analise->faseAnalise($data);
-    $linhasAcordes["arrayAcordes"] = $this->conversao->faseConversao($linhasAcordes["arrayAcordes"]);
+    $linhasAcordes["arrayAcordes"] = $this->conversao->faseConversao($linhasAcordes["arrayAcordes"], $data[1]);
     return $this->concatenacao->faseConcatenacao($linhasAcordes);
   }
 }

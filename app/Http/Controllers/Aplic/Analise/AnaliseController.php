@@ -96,11 +96,24 @@ class AnaliseController extends FerramentaAnaliseController
   private function positivo()
   {
     //echo $this->chor.' é acorde.<br /> ';
+    $this->setTonalidade();
     $this->cifra->acordeConfirmado = $this->chor;
     $this->cifra->sizeAcordeConfirmado = strlen($this->chor);
     $this->InputInArray('arrayAcordes', 'cifra');
   }
 
+  private function setTonalidade()
+  {
+    if($this->cifra->enarmonia['se'] == false){
+      $this->cifra->tonalidade = substr($this->chor, 0, 1);
+      $this->cifra->tipagem = substr($this->chor, 1);
+      
+    }elseif($this->cifra->enarmonia['se'] == true){
+      $this->cifra->tonalidade = substr($this->chor, 0, 2);
+      $this->cifra->tipagem = substr($this->chor, 2);
+    }
+  }
+  
   private function negativo()
   {
     //echo $this->chor.' não é acorde com .'.$this->ac.'.<br /> ';
