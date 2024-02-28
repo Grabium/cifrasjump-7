@@ -66,6 +66,7 @@ class LeituraController extends InputMarcadorController
     }
     $this->texto->textoMarcado = '';
     $this->texto->indicados = [];
+    $this->marcadoresToSend();
     return [$this->texto, $this->marcadores];
   }//faseLeitura()
 
@@ -110,6 +111,17 @@ class LeituraController extends InputMarcadorController
   {
     $saltoLeitura = ($saltoLeitura = strlen(end($this->texto->arrayChor))) ?: 0;
     $this->i += ($saltoLeitura-2);
+  }
+
+  private function marcadoresToSend()
+  {
+    collect($this->marcadores[0])->map(function ($marcador){
+      
+      array_push($this->marcadores[0], $marcador);
+      array_shift($this->marcadores[0]);
+      return $marcador;
+      
+    });
   }
 
 }//class

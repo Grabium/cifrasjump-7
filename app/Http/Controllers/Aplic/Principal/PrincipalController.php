@@ -32,9 +32,9 @@ class PrincipalController extends Controller
 
   private function passosBasicos()
   {
-    $data = $this->leitura->faseLeitura();//[0]$texto [1]$marcadores
-    $linhasAcordes = $this->analise->faseAnalise($data);
+    $data = $this->leitura->faseLeitura();//[0]$texto [1]$marcadores{marc, carac}
+    $linhasAcordes = $this->analise->faseAnalise($data);//arrayAcordes, arrayLinhas, arrayNegat.
     $linhasAcordes["arrayAcordes"] = $this->conversao->faseConversao($linhasAcordes["arrayAcordes"], $data[1]);
-    return $this->concatenacao->faseConcatenacao($linhasAcordes);
+    return $this->concatenacao->faseConcatenacao($linhasAcordes, $data[1]);
   }
 }

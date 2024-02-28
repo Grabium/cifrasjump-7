@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 
 class ConcatenacaoController extends Controller
 {
-  public function faseConcatenacao($achordesConvertidos)
+  public function faseConcatenacao(array $achordesConvertidos, array $marcadores):array
   {
+    //dd($marcadores);
     return $achordesConvertidos;
   }
 }
