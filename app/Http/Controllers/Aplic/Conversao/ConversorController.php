@@ -12,8 +12,7 @@ class ConversorController extends Controller
   private   array   $tonalidadeSustenido = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
   private   array   $tonalidadeBemol     = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
   protected int     $fator;
-  protected array   $arrayAcordes;
-  protected array   $novoArrayAcordes;
+  protected array   $novoArrayAcordes = [];
   protected string  $novoTom;
   protected string  $novoTomInv;
   
@@ -22,18 +21,15 @@ class ConversorController extends Controller
     $this->fator = $fator;
   }
   
-  public function faseConversao($arrayAcordes)
+  public function faseConversao(array $arrayAcordes):array
   {
-    $this->arrayAcordes = $arrayAcordes;
-    
     collect($arrayAcordes)->map(function (CifraController $cifra) {
       $this->cifra = $cifra;
       $this->converter();
-      dd($this->cifra);
-      //$this->inputInnovoArrayAcordes();
+      array_push($this->novoArrayAcordes, $this->cifra);
     });
     
-    return $novoArrayAcordes;
+    return $this->novoArrayAcordes;
   }
 
   private function converter()
@@ -136,4 +132,5 @@ class ConversorController extends Controller
   {
     $this->cifra->acordeConfirmado =  substr_replace($this->cifra->acordeConfirmado,$replace,$index,$length);
   }
+
 }
