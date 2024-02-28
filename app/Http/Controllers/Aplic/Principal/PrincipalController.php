@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Aplic\Principal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Aplic\Conversao\ConversorController;
-use App\Http\Controllers\Aplic\ConcatenacaoController;
+use App\Http\Controllers\Aplic\Concatenacao\ConcatenacaoController;
 use App\Http\Controllers\Aplic\Leitura\LeituraController;
 use App\Http\Controllers\Aplic\Analise\AnaliseController;
 

@@ -187,6 +187,7 @@ class FerramentaAnaliseController extends Controller
 
   protected function seMarcador():bool
   {//se positivo será processado aqui mesmo.
+    $this->cifra->marcador['indexMarcador'] = $this->s;
     $this->sAc();
     if($this->ac == '_'){
       if(($this->cifra->enarmonia['se'] == true)&&($this->s == 3)){
