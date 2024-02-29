@@ -23,11 +23,12 @@ class ConversorController extends Controller
   
   public function faseConversao(array $arrayAcordes):array
   {
-    collect($arrayAcordes)->map(function (CifraController $cifra) {
+    collect($arrayAcordes)->map(function (CifraController $cifra, string $key) {
       $this->cifra = $cifra;
       $this->converter();
-      array_push($this->novoArrayAcordes, $this->cifra);
+      $this->novoArrayAcordes[$key] = $this->cifra;
     });
+    
     
     return $this->novoArrayAcordes;
   }

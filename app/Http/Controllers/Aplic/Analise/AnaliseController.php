@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 
 class AnaliseController extends FerramentaAnaliseController
 {
-  //protected array $arrayLinhas  = [];
   protected array $arrayAcordes = [];
   protected array $arrayNegat   = [];//chor que deverá ser indexado para retorno da fase.
   

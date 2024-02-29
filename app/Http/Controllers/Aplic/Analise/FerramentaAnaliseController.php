@@ -59,7 +59,7 @@ class FerramentaAnaliseController extends Controller
     }
   }
 
-  protected function InputInArray($posNegArr, $posNegItem)
+  protected function InputInArray(string $posNegArr, string $posNegItem)
   {
     $this->cifra->getDissonancia();//zerar quando posit. ou neg.
     $key = array_shift($this->arrayChorKeys);

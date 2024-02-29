@@ -15,7 +15,7 @@ class LeituraController extends InputMarcadorController
 {
 
   private TextoController $texto;
-  private string          $ordem     = 'aberta';
+  private string          $ordem     = 'fechada';
   private int             $complChor = 12;
   private string          $line      = '';
   private string          $chor      = '';
@@ -42,6 +42,7 @@ class LeituraController extends InputMarcadorController
       if($this->car == ' '){
         $this->ordem = 'aberta';
         $this->setLine();
+        
         continue;
       }
 
@@ -49,9 +50,10 @@ class LeituraController extends InputMarcadorController
         if(in_array($this->car, (new NaturalController)->naturais)){
           $this->indicarParaAnalise($this->car);//arryas int e EAs...indicações.
           $this->chor = $this->separarChor();
+          $this->InputInArray('arrayTextLines', 'line');
           $this->InputInArray('arrayChor', 'chor');
           $this->saltarLeitura();
-          $this->InputInArray('arrayTextLines', 'line');
+          //$this->InputInArray('arrayTextLines', 'line');
         }else{
           $this->setLine();
         }
@@ -61,7 +63,7 @@ class LeituraController extends InputMarcadorController
 
       $this->ordem = 'fechada';
     }//for()
-    if($this->line){
+    if($this->line != ''){
       $this->InputInArray('arrayTextLines', 'line');
     }
     $this->texto->textoMarcado = '';
@@ -119,9 +121,13 @@ class LeituraController extends InputMarcadorController
       
       array_push($this->marcadores[0], $marcador);
       array_shift($this->marcadores[0]);
-      return $marcador;
-      
     });
+
+    array_shift($this->marcadores[0]);
+    array_shift($this->marcadores[0]);
+    array_shift($this->marcadores[1]);
+    array_shift($this->marcadores[1]);
+    
   }
 
 }//class

@@ -34,7 +34,7 @@ class PrincipalController extends Controller
   {
     $data = $this->leitura->faseLeitura();//[0]$texto [1]$marcadores{marc, carac}
     $linhasAcordes = $this->analise->faseAnalise($data);//arrayAcordes, arrayLinhas, arrayNegat.
-    $linhasAcordes["arrayAcordes"] = $this->conversao->faseConversao($linhasAcordes["arrayAcordes"], $data[1]);
+    $linhasAcordes['arrayAcordes'] = $this->conversao->faseConversao($linhasAcordes["arrayAcordes"]);
     return $this->concatenacao->faseConcatenacao($linhasAcordes, $data[1]);
   }
 }

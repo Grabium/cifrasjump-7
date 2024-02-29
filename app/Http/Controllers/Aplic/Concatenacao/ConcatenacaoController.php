@@ -5,16 +5,21 @@ namespace App\Http\Controllers\Aplic\Concatenacao;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Aplic\Analise\CifraController;
+use Illuminate\Support\Collection;
+
 
 class ConcatenacaoController extends Controller
 {
 
-  private array $arrayAcordes = [];
-  private array $arrayLinhas  = [];
-  private array $arrayNegat   = [];
-  private array $caracteres   = [];
-  private array $marcadores   = [];
-  protected CifraController $cifra;
+  private array $arrayAcordes   = [];
+  private array $arrayLinhas    = [];
+  private array $arrayNegat     = [];
+  private array $caracteres     = [];
+  private array $marcadores     = [];
+  private array $newAcordes     = [];
+  private array $chaveDeAcordes = [];
+  private CifraController $cifra;
+  private LinhaProntaController $linha;
   
   
   public function faseConcatenacao(array $arraysPrincipais, array $marcadores):array
@@ -24,14 +29,16 @@ class ConcatenacaoController extends Controller
     $this->arrayNegat   = $arraysPrincipais['arrayNegat'];
     $this->marcadores   = $marcadores[0];
     $this->caracteres   = $marcadores[1];
-    
     unset($arraysPrincipais, $marcadores);
     
     $this->changeMarcadoresCifras();
-    //$tihs->inputMarcadoresLinhas();
-    //$this->setLinhas();
+    $this->arrayLinhas = $this->changeMarcadoresLinhasENegat($this->arrayLinhas);
+    $this->arrayNegat  = $this->changeMarcadoresLinhasENegat($this->arrayNegat);
+    unset($this->caracteres, $this->marcadores);
     
-    return [$linhasProntas, $achordesELinhas];
+    $linhasECifras = $this->setLInhasECifras();
+    
+    return ['lines' => $linhasECifras];
   }
 
   private function changeMarcadoresCifras()
@@ -52,7 +59,89 @@ class ConcatenacaoController extends Controller
       }
 
       unset($this->cifra->marcador['indexMarcador'], $this->cifra->inversao['indexInversao']);
-      dd($this->cifra);
+      //dd($this->cifra);
     });
+  }
+
+  private function changeMarcadoresLinhasENegat(array $arr):array
+  {
+    //$arrN = [];
+    foreach($arr as $key => $linha){
+      $arrN[$key] = str_replace($this->marcadores, $this->caracteres, $linha);
+    }
+    return $arrN;
+  }
+
+  private function setLInhasECifras()
+  { 
+    collect($this->arrayAcordes)->map(function (CifraController $cifra, string $key){
+      $this->cifra = $cifra;
+      $this->newAcordes[$key] = $this->cifra->acordeConfirmado;
+      array_push($this->chaveDeAcordes, $key); 
+    });
+    
+    $newMasterArray = array_merge($this->arrayLinhas, $this->arrayNegat, $this->newAcordes);
+    $newMasterArray = $this->ordenar($newMasterArray);
+    $imploded = $this->implodir($newMasterArray);
+    $exploded = $this->explodir($imploded);
+    return $exploded;
+  }
+
+  private function ordenar(array $newMasterArray):array
+  {
+    //$c = 0;
+    $v = [];
+    $l = count($newMasterArray);
+    for($i=0; $i<$l; $i++){
+      $c = $i;
+      settype($c, 'string');
+      $c = '0'.$c;
+      $this->linha = new LinhaProntaController($newMasterArray[$c]);
+      if(in_array($c, $this->chaveDeAcordes)){
+        $this->linha->tipo = 'cifra';
+      }
+      array_push($v, $this->linha);
+    }
+    return $v;
+  }
+
+  private function implodir(array $newMasterArray):array
+  {
+    $imploded = '';
+    $ondeCifra = [];
+    foreach($newMasterArray as $linha){
+      $imploded = $imploded.$linha->conteudo;
+      if($linha->tipo == 'cifra'){
+        array_push($ondeCifra, (strlen($imploded)-1));
+      }
+    }
+    return [$imploded, $ondeCifra];
+  }
+
+  private function explodir($imploded)
+  {
+    $linhaString  = $imploded[0];
+    $ondeCifra    = $imploded[1];
+    $oc = 0;
+    $v = [];
+    $li = '';
+    $cif = false;
+    
+    $l = strlen($linhaString);
+    for($i=0; $i<$l; $i++){
+      $c = $linhaString[$i];
+      $li = $li.$c;
+      if($ondeCifra[$oc] == $i){
+        $cif = true;
+        $oc = (($oc+1)<count($ondeCifra)) ? $oc+1: 0 ;
+      }
+      if($c == '%'){
+        $v[] = ['content'=>$li, 'cifer'=>$cif];
+        $li = '';
+        $cif = false;
+      }
+    }
+    
+    return $v;
   }
 }
