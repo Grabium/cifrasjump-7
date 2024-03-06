@@ -24,7 +24,6 @@ class ConcatenacaoController extends Controller
   
   public function faseConcatenacao(array $arraysPrincipais, array $marcadores):array
   {
-    //dd($arraysPrincipais);
     $this->arrayAcordes = $arraysPrincipais['arrayAcordes'];
     $this->arrayLinhas  = $arraysPrincipais['arrayLinhas'];
     $this->arrayNegat   = $arraysPrincipais['arrayNegat'];
@@ -65,10 +64,11 @@ class ConcatenacaoController extends Controller
 
   private function changeMarcadoresLinhasENegat(array $arr):array
   {
-    foreach($arr as $key => $linha){
-      $arrN[$key] = str_replace($this->marcadores, $this->caracteres, $linha);
-    }
-    return $arrN;
+    
+    return collect($arr)->map(function ($linha, $key){
+      return str_replace($this->marcadores, $this->caracteres, $linha);
+    })->all();
+    
   }
 
   private function setLInhasECifras()
@@ -116,7 +116,7 @@ class ConcatenacaoController extends Controller
     return [$imploded, $ondeCifra];
   }
 
-  private function explodir($imploded)
+  private function explodir($imploded):array
   {
     $linhaString  = $imploded[0];
     $ondeCifra    = $imploded[1];
@@ -129,7 +129,7 @@ class ConcatenacaoController extends Controller
     for($i=1; $i<$l; $i++){
       $c = $linhaString[$i];
       $li = $li.$c;
-      if($ondeCifra[$oc] == $i){
+      if(($ondeCifra != [])&&($ondeCifra[$oc] == $i)){
         $cif = true;
         $oc = (($oc+1)<count($ondeCifra)) ? $oc+1: 0 ;
       }
@@ -145,11 +145,10 @@ class ConcatenacaoController extends Controller
     return $v;
   }
 
-  private function setOnlyChords():Collection
+  private function setOnlyChords():array
   {
-    $collectionChords = collect($this->arrayAcordes)->map(function (CifraController $chord){
+    return collect($this->arrayAcordes)->map(function (CifraController $chord){
       return substr($chord->acordeConfirmado, 0, -1);
-    });
-    return $collectionChords;
+    })->all();
   }
 }
