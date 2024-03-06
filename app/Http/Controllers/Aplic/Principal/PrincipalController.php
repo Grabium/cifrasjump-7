@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Aplic\Principal;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+use App\Http\Requests\FatorRequest;
 use App\Http\Controllers\Aplic\Conversao\ConversorController;
 use App\Http\Controllers\Aplic\Concatenacao\ConcatenacaoController;
 use App\Http\Controllers\Aplic\Leitura\LeituraController;
@@ -15,8 +16,10 @@ class PrincipalController extends Controller
   private LeituraController $leitura;
   
 
-  public function __construct(Request $request)
+  public function __construct(FatorRequest $request)
   {
+    $validated = $request->validated();
+    dd($validated);
     //fazer o try/cath aqui:
     $this->leitura = new LeituraController((string)$request['texto']);//que instaura texto
     $this->analise = new AnaliseController();//que instaura cifra
