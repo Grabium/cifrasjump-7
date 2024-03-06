@@ -37,8 +37,9 @@ class ConcatenacaoController extends Controller
     unset($this->caracteres, $this->marcadores);
     
     $linhasECifras = $this->setLInhasECifras();
+    $collectionChords = $this->setOnlyChords();
     
-    return ['lines' => $linhasECifras];
+    return ['lines' => $linhasECifras, 'cifers' => $collectionChords];
   }
 
   private function changeMarcadoresCifras()
@@ -143,5 +144,13 @@ class ConcatenacaoController extends Controller
     }
     
     return $v;
+  }
+
+  private function setOnlyChords():Collection
+  {
+    $collectionChords = collect($this->arrayAcordes)->map(function (CifraController $chord){
+      return substr($chord->acordeConfirmado, 0, -1);
+    });
+    return $collectionChords;
   }
 }
