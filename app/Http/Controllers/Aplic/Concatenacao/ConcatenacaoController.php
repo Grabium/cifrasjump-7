@@ -147,8 +147,10 @@ class ConcatenacaoController extends Controller
 
   private function setOnlyChords():array
   {
-    return collect($this->arrayAcordes)->map(function (CifraController $chord){
+    $r = collect($this->arrayAcordes)->map(function (CifraController $chord){
       return substr($chord->acordeConfirmado, 0, -1);
     })->all();
+
+    return array_unique($r);
   }
 }
