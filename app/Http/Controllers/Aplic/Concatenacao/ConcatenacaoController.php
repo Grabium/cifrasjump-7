@@ -24,6 +24,7 @@ class ConcatenacaoController extends Controller
   
   public function faseConcatenacao(array $arraysPrincipais, array $marcadores):array
   {
+    //dd($arraysPrincipais);
     $this->arrayAcordes = $arraysPrincipais['arrayAcordes'];
     $this->arrayLinhas  = $arraysPrincipais['arrayLinhas'];
     $this->arrayNegat   = $arraysPrincipais['arrayNegat'];
@@ -44,7 +45,6 @@ class ConcatenacaoController extends Controller
 
   private function changeMarcadoresCifras()
   {
-    //dd($this->arrayAcordes);
     collect($this->arrayAcordes)->map(function (CifraController $cifra){
       $this->cifra = $cifra;
       if($this->cifra->marcador['se'] == true){
@@ -60,13 +60,11 @@ class ConcatenacaoController extends Controller
       }
 
       unset($this->cifra->marcador['indexMarcador'], $this->cifra->inversao['indexInversao']);
-      //dd($this->cifra);
     });
   }
 
   private function changeMarcadoresLinhasENegat(array $arr):array
   {
-    //$arrN = [];
     foreach($arr as $key => $linha){
       $arrN[$key] = str_replace($this->marcadores, $this->caracteres, $linha);
     }
@@ -90,7 +88,6 @@ class ConcatenacaoController extends Controller
 
   private function ordenar(array $newMasterArray):array
   {
-    //$c = 0;
     $v = [];
     $l = count($newMasterArray);
     for($i=0; $i<$l; $i++){
@@ -129,7 +126,7 @@ class ConcatenacaoController extends Controller
     $cif = false;
     
     $l = strlen($linhaString);
-    for($i=0; $i<$l; $i++){
+    for($i=1; $i<$l; $i++){
       $c = $linhaString[$i];
       $li = $li.$c;
       if($ondeCifra[$oc] == $i){
@@ -137,6 +134,8 @@ class ConcatenacaoController extends Controller
         $oc = (($oc+1)<count($ondeCifra)) ? $oc+1: 0 ;
       }
       if($c == '%'){
+        $li = substr($li, 1);
+        $li = substr($li, 0, -3);
         $v[] = ['content'=>$li, 'cifer'=>$cif];
         $li = '';
         $cif = false;
