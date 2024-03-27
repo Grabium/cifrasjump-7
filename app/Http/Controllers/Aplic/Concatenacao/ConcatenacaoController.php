@@ -83,6 +83,7 @@ class ConcatenacaoController extends Controller
     $newMasterArray = $this->ordenar($newMasterArray);
     $imploded = $this->implodir($newMasterArray);
     $exploded = $this->explodir($imploded);
+    //dd($exploded);
     return $exploded;
   }
 
@@ -135,7 +136,7 @@ class ConcatenacaoController extends Controller
       }
       if($c == '%'){
         $li = substr($li, 1);
-        $li = substr($li, 0, -3);
+        $li = ($cif == true) ? substr($li, 0, -3) : substr($li, 0, -2) ;
         $v[] = ['content'=>$li, 'cifer'=>$cif];
         $li = '';
         $cif = false;
