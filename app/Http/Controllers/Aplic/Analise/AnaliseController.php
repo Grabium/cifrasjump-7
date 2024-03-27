@@ -42,7 +42,7 @@ class AnaliseController extends FerramentaAnaliseController
     if(($this->chor[0] == 'A')||($this->chor[0] == 'E')){
       $this->preparaEApAnalise();
     }
-    //echo $this->chor.' será analisado:<br /> ';
+    //echo '<br /> -> .'.$this->chor.' será analisado:<br /> ';
     $this->incrChor();
   }
 
@@ -56,15 +56,18 @@ class AnaliseController extends FerramentaAnaliseController
   private function analisar()
   {
     require "ExpressoesTestes.php";
-    //echo '- .'.$this->ac.'. - .'.$this->chor.'. testando.<br>';
+    //echo 'ac= .'.$this->ac.'. chor= .'.$this->chor.'. testando.<br>';
     if($espaçoOuInversao){ 
+      //echo 'espaço.<br />';
       if($ouMiOuLaMaiorOuMenor){
+        //echo 'if EA positivo<br />';
         $funcao = $this->seEouA();
         $this->$funcao(); //positivo() || negativo()
       }else{//positivo porem não EA
         $this->positivo();
       }
     }elseif($menor){
+      //echo 'menor.<br />';
       $this->processaMenor();
       $this->incrChor();
     }elseif($enarmoniaDeAcordOuDissonan){

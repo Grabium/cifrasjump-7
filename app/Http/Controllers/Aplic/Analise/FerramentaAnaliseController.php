@@ -48,11 +48,15 @@ class FerramentaAnaliseController extends Controller
     if((($this->texto->localEA_menosDois == "%")||($this->texto->localEA_menosDois == '.'))//se início de frase
       &&(!in_array($this->texto->localEA_maisDois, $this->naturais))//e não há um possível acorde o seguindo.
       &&($this->texto->localEA_maisDois != "%")&&($this->texto->localEA_maisDois != " ")){//e não é fim de linha de acordes.
+      //echo 'negativo 1 <br />';
       return 'negativo'; //AnaliseController->incrChor();
-    }elseif(($this->texto->localEA_menosDois == "%")
-        &&($this->chor[1] == 'm')
+      
+    }elseif(($this->chor[1] == 'm')
+        &&(!in_array($this->texto->localEmAm_maisDois, $this->naturais))//e não há um possível acorde o seguindo.
+        &&($this->texto->localEA_menosDois == "%")
         &&($this->texto->localEmAm_maisDois != "%")
         &&($this->texto->localEmAm_maisDois != " ")){
+      //echo 'negativo 2 .'.$this->texto->localEmAm_maisDois.' - '.$this->texto->localEA_menosDois.' - '.$this->chor[1].'.<br />';
       return 'negativo';
     }else{
       return 'positivo'; // encaminha para AnaliseController->positivo();
