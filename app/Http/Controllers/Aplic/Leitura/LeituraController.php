@@ -53,7 +53,6 @@ class LeituraController extends InputMarcadorController
           $this->InputInArray('arrayTextLines', 'line');
           $this->InputInArray('arrayChor', 'chor');
           $this->saltarLeitura();
-          //$this->InputInArray('arrayTextLines', 'line');
         }else{
           $this->setLine();
         }

@@ -27,15 +27,16 @@ class PrincipalController extends Controller
   
   public function master()
   {
-    $textoResposta = $this->passosBasicos();
-    return response()->json($textoResposta);
+    $resposta = $this->passosBasicos();
+    return response()->json($resposta);
   }
 
   private function passosBasicos()
   {
-    $data = $this->leitura->faseLeitura();//texto, marcadores[marc, carac].
-    $linhasAcordes = $this->analise->faseAnalise($data);//arrayAcordes, arrayLinhas, arrayNegat.
-    $linhasAcordes['arrayAcordes'] = $this->conversao->faseConversao($linhasAcordes["arrayAcordes"]);
-    return $this->concatenacao->faseConcatenacao($linhasAcordes, $data[1]);
+    $texto_e_marcadores = $this->leitura->faseLeitura();//texto(objeto), marcadores[marc, carac].
+    $linhas_e_Acordes = $this->analise->faseAnalise($texto_e_marcadores);//arrayAcordes, arrayLinhas, arrayNegat.
+    $linhas_e_Acordes['arrayAcordes'] = $this->conversao->faseConversao($linhas_e_Acordes["arrayAcordes"]);
+    $resposta = $this->concatenacao->faseConcatenacao($linhas_e_Acordes, $texto_e_marcadores[1]);
+    return $resposta;
   }
 }
